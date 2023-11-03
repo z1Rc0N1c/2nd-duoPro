@@ -1,187 +1,153 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-int i;
-typedef struct Object{
+
+typedef struct Object {
     char team[6];
     int isDead;
     int isPromoted;
     char objectType[10];
-    int objNum;//1은 폰, 2은 룩, 3은 나이트, 4는 비숍, 5은 퀸, 6은 킹
     int xPos;
     int yPos;
     int isMovement;
     char PromotedObject[10];
-}Pawn, Rook, Knight, Bishop, Queen, King;
-void assignment(struct Object *a, const char *team, int objType, int size) {
+} Object;
+int i;
+void assignMent(Object* objects, const char* team, int objType, int size) {//기물 선언용 함수
     for (i = 0; i < size; i++) {
-        strncpy(a[i].team, team, sizeof(a[i].team));
-        a[i].team[sizeof(a[i].team) - 1] = '\0';
-        a[i].isDead = 0;
-        a[i].isPromoted = 0;
-        if(strcmp(a[i].team, "white")==0){
+        strncpy(objects[i].team, team, sizeof(objects[i].team));
+        objects[i].team[sizeof(objects[i].team) - 1] = '\0';
+        objects[i].isDead = 0;
+        objects[i].isPromoted = 0;
+
+        if (strcmp(objects[i].team, "white") == 0) {
             switch (objType) {
-                case 1:strcpy(a[i].objectType, "Pawn");a[i].xPos = 2;break;
-                case 2:strcpy(a[i].objectType, "Rook");a[i].xPos = 1;break;
-                case 3:strcpy(a[i].objectType, "Knight");a[i].xPos = 1;break;
-                case 4:strcpy(a[i].objectType, "Bishop");a[i].xPos = 1;break;
-                case 5:strcpy(a[i].objectType, "Queen");a[i].xPos = 1;break;
-                case 6:strcpy(a[i].objectType, "King");a[i].xPos = 1;break;
-                default:break;
+                case 1: strcpy(objects[i].objectType, "Pawn"); objects[i].xPos = 2; break;
+                case 2: strcpy(objects[i].objectType, "Rook"); objects[i].xPos = 1; break;
+                case 3: strcpy(objects[i].objectType, "Knight"); objects[i].xPos = 1; break;
+                case 4: strcpy(objects[i].objectType, "Bishop"); objects[i].xPos = 1; break;
+                case 5: strcpy(objects[i].objectType, "Queen"); objects[i].xPos = 1; break;
+                case 6: strcpy(objects[i].objectType, "King"); objects[i].xPos = 1; break;
+                default: break;
             }
-        }else{
+        } else {
             switch (objType) {
-                case 1:strcpy(a[i].objectType, "Pawn");a[i].xPos = 7;break;
-                case 2:strcpy(a[i].objectType, "Rook");a[i].xPos = 8;break;
-                case 3:strcpy(a[i].objectType, "Knight");a[i].xPos = 8;break;
-                case 4:strcpy(a[i].objectType, "Bishop");a[i].xPos = 8;break;
-                case 5:strcpy(a[i].objectType, "Queen");a[i].xPos = 8;break;
-                case 6:strcpy(a[i].objectType, "King");a[i].xPos = 8;break;
-                default:break;
-            }
-        }
-        if (strcmp(a[i].team, "white") == 0)
-            switch (objType) {
-                case 1:
-                    a[i].yPos = i + 1;
-                    break;
-                case 2:
-                    if (i == 0) { a[i].yPos = 1; }
-                    else { a[i].yPos = 8; }
-                    break;
-                case 3:
-                    if (i == 0) { a[i].yPos = 2; }
-                    else { a[i].yPos = 7; }
-                    break;
-                case 4:
-                    if (i == 0) { a[i].yPos = 3; }
-                    else { a[i].yPos = 6; }
-                    break;
-                case 5:
-                    a[i].yPos = 4;
-                    break;
-                case 6:
-                    a[i].yPos = 5;
-                    break;
-                default:
-                    break;
-            }
-        else {
-            switch (objType) {
-                case 1:
-                    a[i].yPos = i + 1;
-                    break;
-                case 2:
-                    if (i == 0) { a[i].yPos = 1; }
-                    else { a[i].yPos = 8; }
-                    break;
-                case 3:
-                    if (i == 0) { a[i].yPos = 2; }
-                    else { a[i].yPos = 7; }
-                    break;
-                case 4:
-                    if (i == 0) { a[i].yPos = 3; }
-                    else { a[i].yPos = 6; }
-                    break;
-                case 5:
-                    a[i].yPos = 4;
-                    break;
-                case 6:
-                    a[i].yPos = 5;
-                    break;
-                default:
-                    break;
+                case 1: strcpy(objects[i].objectType, "Pawn"); objects[i].xPos = 7; break;
+                case 2: strcpy(objects[i].objectType, "Rook"); objects[i].xPos = 8; break;
+                case 3: strcpy(objects[i].objectType, "Knight"); objects[i].xPos = 8; break;
+                case 4: strcpy(objects[i].objectType, "Bishop"); objects[i].xPos = 8; break;
+                case 5: strcpy(objects[i].objectType, "Queen"); objects[i].xPos = 8; break;
+                case 6: strcpy(objects[i].objectType, "King"); objects[i].xPos = 8; break;
+                default: break;
             }
         }
-        a[i].isMovement = 0;
-        a[i].PromotedObject[0] = '\0';
+
+        if (strcmp(objects[i].team, "white") == 0) {
+            switch (objType) {
+                case 1: objects[i].yPos = i + 1; break;
+                case 2: objects[i].yPos = (i == 0) ? 1 : 8; break;
+                case 3: objects[i].yPos = (i == 0) ? 2 : 7; break;
+                case 4: objects[i].yPos = (i == 0) ? 3 : 6; break;
+                case 5: objects[i].yPos = 4; break;
+                case 6: objects[i].yPos = 5; break;
+                default: break;
+            }
+        } else {
+            switch (objType) {
+                case 1: objects[i].yPos = i + 1; break;
+                case 2: objects[i].yPos = (i == 0) ? 1 : 8; break;
+                case 3: objects[i].yPos = (i == 0) ? 2 : 7; break;
+                case 4: objects[i].yPos = (i == 0) ? 3 : 6; break;
+                case 5: objects[i].yPos = 4; break;
+                case 6: objects[i].yPos = 5; break;
+                default: break;
+            }
+        }
+
+        objects[i].isMovement = 0;
+        objects[i].PromotedObject[0] = '\0';
     }
 }
-int size;
+void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
+    int j;
+    switch (objType) {
+        case 1:
+            for (j = 0; j < size; j++) {
+                if (a[j].xPos == x && a[j].yPos == y) {
+                    printf("(%d, %d) 좌표의 %s 선택했습니다.", x, y, a[j].objectType);
+                }else{
+                    printf("Cannot find Object, Reselect");break;
+                }
+            }
+            break;
+        case 2:
+            for (j = 0; j < size; j++) {
+                if (a[j].xPos == x && a[j].yPos == y) {
+                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+                }
+            }
+            break;
+        case 3:
+            for (j = 0; j < size; j++) {
+                if (a[j].xPos == x && a[j].yPos == y) {
+                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+                }
+            }
+            break;
+        case 4:
+            for (j = 0; j < size; j++) {
+                if (a[j].xPos == x && a[j].yPos == y) {
+                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+                }
+            }
+            break;
+        case 5:
+            if (a->xPos == x && a->yPos == y) {
+                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
+            }
+            break;
+        case 6:
+            if (a->xPos == x && a->yPos == y) {
+                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
+            } else {
+                printf("Cannot find Object, Reselect");
+            }
+            break;
+    }
+
+}
+
 int main() {
-    Pawn *wPawn, *bPawn;
-    Rook *wRook, *bRook;
-    Knight *wKnight, *bKnight;
-    Bishop *wBishop, *bBishop;
-    Queen *wQueen, *bQueen;
-    King *wKing, *bKing;
-    wPawn = (struct Object *) malloc(8 * sizeof(struct Object));
-    bPawn = (struct Object *) malloc(8*sizeof(struct Object));
-    wKnight = (struct Object *) malloc(2*sizeof(struct Object));
-    bKnight = (struct Object *) malloc(2*sizeof(struct Object));
-    wRook = (struct Object *) malloc(2*sizeof(struct Object));
-    bRook = (struct Object *) malloc(2*sizeof(struct Object));
-    wBishop = (struct Object *) malloc(2*sizeof(struct Object));
-    bBishop = (struct Object *) malloc(2*sizeof(struct Object));
-    wQueen = (struct Object *) malloc(1*sizeof(struct Object));
-    bQueen = (struct Object *) malloc(1*sizeof(struct Object));
-    wKing = (struct Object *) malloc(1*sizeof(struct Object));
-    bKing = (struct Object *) malloc(1*sizeof(struct Object));
-    if(wPawn == NULL||bPawn == NULL||wRook == NULL||bRook == NULL||wKnight == NULL||bKnight == NULL
-       ||wBishop == NULL||bBishop == NULL||wQueen == NULL||bQueen == NULL||wKing == NULL||bKing == NULL){
+    Object *whitePieces, *blackPieces;
+    whitePieces = (Object*)malloc(16 * sizeof(Object));
+    blackPieces = (Object*)malloc(16 * sizeof(Object));
+
+    if (whitePieces == NULL || blackPieces == NULL) {
         printf("메모리 할당 오류!\n");
+        return 1;
     }
-    wPawn->objNum = 1;
-    bPawn->objNum = 1;
-    wRook->objNum = 2;
-    bRook->objNum = 2;
-    wKnight->objNum = 3;
-    bKnight->objNum = 3;
-    wBishop->objNum = 4;
-    bBishop->objNum = 4;
-    wQueen->objNum = 5;
-    bQueen->objNum = 5;
-    wKing->objNum = 6;
-    bKing->objNum = 6;
-    size = 8;
-    strcpy(wPawn->team, "white");
-    assignment(wPawn, wPawn->team, wPawn->objNum, size);
-    strcpy(bPawn->team, "black");
-    assignment(bPawn, bPawn->team, bPawn->objNum, size);
-    size = 2;
-    strcpy(wRook->team, "white");
-    assignment(wRook, wRook->team, wRook->objNum, size);
-    strcpy(bRook->team, "white");
-    assignment(bRook, bRook->team, bRook->objNum, size);
-    strcpy(wKnight->team, "white");
-    assignment(wKnight, wKnight->team, wKnight->objNum, size);
-    strcpy(bKnight->team, "white");
-    assignment(bKnight, bKnight->team, bKnight->objNum, size);
-    strcpy(wBishop->team, "white");
-    assignment(wBishop, wBishop->team, wBishop->objNum, size);
-    strcpy(bBishop->team, "white");
-    assignment(bBishop, bBishop->team, bBishop->objNum, size);
-    size = 1;
-    strcpy(wQueen->team, "white");
-    assignment(wQueen, wQueen->team, wQueen->objNum, size);
-    strcpy(bQueen->team, "white");
-    assignment(bQueen, bQueen->team, bQueen->objNum, size);
-    strcpy(wKing->team, "white");
-    assignment(wKing, wKing->team, wKing->objNum, size);
-    strcpy(bKing->team, "white");
-    assignment(bKing, bKing->team, bKing->objNum, size);
 
+    assignMent(whitePieces, "white", 1, 8);
+    assignMent(blackPieces, "black", 1, 8);
+    assignMent(whitePieces + 8, "white", 2, 2);
+    assignMent(blackPieces + 8, "black", 2, 2);
+    assignMent(whitePieces + 10, "white", 3, 2);
+    assignMent(blackPieces + 10, "black", 3, 2);
+    assignMent(whitePieces + 12, "white", 4, 2);
+    assignMent(blackPieces + 12, "black", 4, 2);
+    assignMent(whitePieces + 14, "white", 5, 1);
+    assignMent(blackPieces + 14, "black", 5, 1);
+    assignMent(whitePieces + 15, "white", 6, 1);
+    assignMent(blackPieces + 15, "black", 6, 1);
 
-    for(i = 0; i<8; i++){
-        printf("%s %d %d %s %d %d %d %s\n", wPawn[i].team, wPawn[i].isDead, wPawn[i].isPromoted,  wPawn[i].objectType,
-               wPawn[i].xPos, wPawn[i].yPos, wPawn[i].isMovement, wPawn[i].PromotedObject);
+    // 출력 예시
+    for (i = 0; i < 16; i++) {
+        printf("%s %d %d %s %d %d %d %s\n", whitePieces[i].team, whitePieces[i].isDead, whitePieces[i].isPromoted,
+               whitePieces[i].objectType, whitePieces[i].xPos, whitePieces[i].yPos, whitePieces[i].isMovement,
+               whitePieces[i].PromotedObject);
     }
-    //
-    //
-
-
-
-    free(wPawn);
-    free(bPawn);
-    free(wRook);
-    free(bRook);
-    free(wKnight);
-    free(bKnight);
-    free(wBishop);
-    free(bBishop);
-    free(wQueen);
-    free(bQueen);
-    free(wKing);
-    free(bKing);
+    check_obj(whitePieces,1, 8, 1, 1);
+    free(whitePieces);
+    free(blackPieces);
     return 0;
 }
