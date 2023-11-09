@@ -104,6 +104,8 @@ void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 �
         case 5:
             if (a->xPos == x && a->yPos == y) {
                 printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
+            }else{
+                printf("Cannot find Object, Reselect");
             }
             break;
         case 6:
@@ -115,6 +117,39 @@ void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 �
             break;
     }
 
+}
+void move_obj(Object *a, int objType, int size, int x, int y){
+    int j;
+    if(a->team == "white"){
+        switch (objType) {
+            case 1:
+                for(j=0; j<size; j++){
+                    if(a->xPos+1 == x&&(a->yPos+1 == y||a->yPos-1 == y)){
+
+                    }else{
+                        a->xPos+=1;
+                    }break;
+                }
+
+            case 2:break;
+            case 3:break;
+            case 4:break;
+            case 5:break;
+            case 6:break;
+            default:break;
+        }
+    }else{
+        switch (objType) {
+            switch (objType) {
+                case 1:break;
+                case 2:break;
+                case 3:break;
+                case 4:break;
+                case 5:break;
+                case 6:break;
+            }
+        }
+    }
 }
 
 int main() {
