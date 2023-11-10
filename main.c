@@ -11,7 +11,14 @@ typedef struct Object {
     int yPos;
     int isMovement;
     char PromotedObject[10];
+    int ownNum;
 } Object;
+typedef struct Position{
+    int xPosi;
+    int yPosi;
+    char team[6];
+    int ownNumber;
+}Pos;
 int i;
 void assignMent(Object* objects, const char* team, int objType, int size) {//기물 선언용 함수
     for (i = 0; i < size; i++) {
@@ -67,14 +74,32 @@ void assignMent(Object* objects, const char* team, int objType, int size) {//기
         objects[i].isMovement = 0;
         objects[i].PromotedObject[0] = '\0';
     }
+
 }
-void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
+void ownNum(Object *a){
+    if(a->team == "white"){
+        for(i=0; i<16; i++){
+            a[i].ownNum =i+1;
+        }
+    }else{
+        for(i=0; i<16; i++){
+            a[i].ownNum =i+17;
+        }
+    }
+
+}
+struct Position check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
     int j;
+    struct Position p;
     switch (objType) {
         case 1:
             for (j = 0; j < size; j++) {
                 if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s 선택했습니다.", x, y, a[j].objectType);
+                    p.xPosi = a[j].xPos;
+                    p.yPosi = a[j].yPos;
+                    strcpy(p.team, a[j].team);
+                    p.ownNumber = a[j].ownNum;
+                    return p;
                 }else{
                     printf("Cannot find Object, Reselect");break;
                 }
@@ -83,53 +108,140 @@ void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 �
         case 2:
             for (j = 0; j < size; j++) {
                 if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+                    p.xPosi = a[j].xPos;
+                    p.yPosi = a[j].yPos;
+                    strcpy(p.team, a[j].team);
+                    p.ownNumber = a[j].ownNum;
+                    return p;
+                }else{
+                    printf("Cannot find Object, Reselect");break;
                 }
             }
             break;
         case 3:
             for (j = 0; j < size; j++) {
                 if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+                    p.xPosi = a[j].xPos;
+                    p.yPosi = a[j].yPos;
+                    strcpy(p.team, a[j].team);
+                    p.ownNumber = a[j].ownNum;
+                    return p;
+                }else{
+                    printf("Cannot find Object, Reselect");break;
                 }
             }
             break;
         case 4:
             for (j = 0; j < size; j++) {
                 if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+                    p.xPosi = a[j].xPos;
+                    p.yPosi = a[j].yPos;
+                    strcpy(p.team, a[j].team);
+                    p.ownNumber = a[j].ownNum;
+                    return p;
+                }else{
+                    printf("Cannot find Object, Reselect");break;
                 }
             }
             break;
         case 5:
-            if (a->xPos == x && a->yPos == y) {
-                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
-            }else{
-                printf("Cannot find Object, Reselect");
+            for (j = 0; j < size; j++) {
+                if (a[j].xPos == x && a[j].yPos == y) {
+                    p.xPosi = a[j].xPos;
+                    p.yPosi = a[j].yPos;
+                    strcpy(p.team, a[j].team);
+                    p.ownNumber = a[j].ownNum;
+                    return p;
+                }else{
+                    printf("Cannot find Object, Reselect");break;
+                }
             }
             break;
         case 6:
-            if (a->xPos == x && a->yPos == y) {
-                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
-            } else {
-                printf("Cannot find Object, Reselect");
+            for (j = 0; j < size; j++) {
+                if (a[j].xPos == x && a[j].yPos == y) {
+                    p.xPosi = a[j].xPos;
+                    p.yPosi = a[j].yPos;
+                    strcpy(p.team, a[j].team);
+                    p.ownNumber = a[j].ownNum;
+                    return p;
+                }else{
+                    printf("Cannot find Object, Reselect");break;
+                }
             }
             break;
     }
 
-}
-void move_obj(Object *a, int objType, int size, int x, int y){
+}//b안의 정보가 선택한 기물의 정보임
+int Pawn_diag(Object *a, Pos *b, int size){
+    int j;
+    for(j=0; j<size; j++){
+        if(b->team == "white"){
+            if(a[j].team == "black"){
+                if(b->xPosi+1 == a[j].xPos&&b->yPosi+1 == a[j].yPos){
+                    return 2;
+                }else if(b->xPosi+1 == a[j].xPos&&b->yPosi-1 == a[j].yPos){
+                    return 1;
+                }else if(b->xPosi+1 == a[j].xPos&&b->yPosi == a[j].yPos){
+                    return 0;
+                }else{
+                    return -2;
+                }
+            }else{
+                return -2;
+            }
+        }else if(b->team == "black"){
+            if(a[j].team == "white"){
+                if(b->xPosi-1 == a[j].xPos&&b->yPosi+1 == a[j].yPos){
+                    return 2;
+                }else if(b->xPosi-1 == a[j].xPos&&b->yPosi-1 == a[j].yPos){
+                    return 1;
+                }else if(b->xPosi -1 == a[j].xPos&&b->yPosi == a[j].yPos){
+                    return 0;
+                }
+                else{
+                    return -2;
+                }
+            }else{
+                return -2;
+            }
+        }else{
+            return -2;
+        }
+    }
+
+}//폰이 대각선으로 움직일 수 있는지 확인하는 함수
+void move_obj(Object *a, Pos *b,int objType, int size, int x, int y){
     int j;
     if(a->team == "white"){
         switch (objType) {
             case 1:
                 for(j=0; j<size; j++){
-                    if(a->xPos+1 == x&&(a->yPos+1 == y||a->yPos-1 == y)){
+                    if(Pawn_diag(a, b, size) == 2){
+                        if(x == b->xPosi +1&&y == b->yPosi+1){
+                            b->xPosi +=1;
+                            b->yPosi +=1;
+                        }
 
-                    }else{
-                        a->xPos+=1;
-                    }break;
-                }
+                    }else if(Pawn_diag(a, b, size) == 1){
+                        if(x == b->xPosi +1&&y == b->yPosi-1){
+                            b->xPosi+=1;
+                            b->yPosi-=1;
+                        }
+                    }else if(Pawn_diag(a, b, size) == 0){
+                        if(b->xPosi == 2){
+                            if(x == b->xPosi+2&&y == b->yPosi){
+                                b->xPosi +=2;
+                            }else if(x == b->xPosi+1&&y == b->yPosi){
+                                b->xPosi +=1;
+                            }
+                        }else{
+                            if(x == b->xPosi+1&&y == b->yPosi){
+                                b->xPosi+=1;
+                            }
+                        }
+                    }
+                }break;
 
             case 2:break;
             case 3:break;
@@ -140,14 +252,26 @@ void move_obj(Object *a, int objType, int size, int x, int y){
         }
     }else{
         switch (objType) {
-            switch (objType) {
-                case 1:break;
-                case 2:break;
-                case 3:break;
-                case 4:break;
-                case 5:break;
-                case 6:break;
-            }
+            case 1:
+                for(j=0; j<size; j++){
+                    if(Pawn_diag(a, b, size) == 2){
+                        b->xPosi -=1;
+                        b->yPosi +=1;
+                    }else if(Pawn_diag(a, b, size) == 1){
+                        b->xPosi -=1;
+                        b->yPosi +=1;
+                    }else if(Pawn_diag(a, b, size) == 0){
+                        if(b->xPosi == 7){
+                            b->xPosi -=2;
+                        }else{
+                            b->xPosi -=1;
+                        }
+
+                    }else{
+                        break;
+                    }
+                }break;
+            case 2:
         }
     }
 }
@@ -174,12 +298,13 @@ int main() {
     assignMent(blackPieces + 14, "black", 5, 1);
     assignMent(whitePieces + 15, "white", 6, 1);
     assignMent(blackPieces + 15, "black", 6, 1);
-
+    ownNum(whitePieces);
+    ownNum(blackPieces);
     // 출력 예시
     for (i = 0; i < 16; i++) {
-        printf("%s %d %d %s %d %d %d %s\n", whitePieces[i].team, whitePieces[i].isDead, whitePieces[i].isPromoted,
+        printf("%s %d %d %s %d %d %d %d %s\n", whitePieces[i].team, whitePieces[i].isDead, whitePieces[i].isPromoted,
                whitePieces[i].objectType, whitePieces[i].xPos, whitePieces[i].yPos, whitePieces[i].isMovement,
-               whitePieces[i].PromotedObject);
+               whitePieces[i].ownNum, whitePieces[i].PromotedObject);
     }
     check_obj(whitePieces,1, 8, 1, 1);
     free(whitePieces);
