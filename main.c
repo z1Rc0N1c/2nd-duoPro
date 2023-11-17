@@ -5,12 +5,9 @@
 typedef struct Object {
     char team[6];
     int isDead;
-    int isPromoted;
     char objectType[10];
     int xPos;
     int yPos;
-    int isMovement;
-    char PromotedObject[10];
     int ownNum;
 } Object;
 typedef struct Position{
@@ -25,7 +22,6 @@ void assignMent(Object* objects, const char* team, int objType, int size) {//기
         strncpy(objects[i].team, team, sizeof(objects[i].team));
         objects[i].team[sizeof(objects[i].team) - 1] = '\0';
         objects[i].isDead = 0;
-        objects[i].isPromoted = 0;
 
         if (strcmp(objects[i].team, "white") == 0) {
             switch (objType) {
@@ -70,9 +66,6 @@ void assignMent(Object* objects, const char* team, int objType, int size) {//기
                 default: break;
             }
         }
-
-        objects[i].isMovement = 0;
-        objects[i].PromotedObject[0] = '\0';
     }
 
 }
@@ -179,10 +172,13 @@ int Pawn_diag(Object *a, Pos *b, int size){
         if(b->team == "white"){
             if(a[j].team == "black"){
                 if(b->xPosi+1 == a[j].xPos&&b->yPosi+1 == a[j].yPos){
+                    b->ownNumber = a[j].ownNum;
                     return 2;
                 }else if(b->xPosi+1 == a[j].xPos&&b->yPosi-1 == a[j].yPos){
+                    b->ownNumber = a[j].ownNum;
                     return 1;
                 }else if(b->xPosi+1 == a[j].xPos&&b->yPosi == a[j].yPos){
+                    b->ownNumber = a[j].ownNum;
                     return 0;
                 }else{
                     return -2;
@@ -400,6 +396,50 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
         }
     }
 }
+int checkMate(Object *a, Pos *b, int size, int x, int y){
+
+}
+int Promotion(Pos *b, int objType,int size, int select){
+    if(b->team == "white") {
+        if (objType == 1) {
+            if (b->xPosi == 8) {
+                switch (select) {
+                    case 1:
+                        objType = 2;
+                        break;
+                    case 2:
+                        objType = 3;
+                        break;
+                    case 3:
+                        objType = 4;
+                        break;
+                    case 4:
+                        objType = 5;
+                        break;
+                }
+            }
+        }
+    }else if(b->team == "black"){
+        if (objType == 1) {
+            if (b->xPosi == 1) {
+                switch (select) {
+                    case 1:
+                        objType = 2;
+                        break;
+                    case 2:
+                        objType = 3;
+                        break;
+                    case 3:
+                        objType = 4;
+                        break;
+                    case 4:
+                        objType = 5;
+                        break;
+                }
+            }
+        }
+    }
+}
 int main() {
     Object *whitePieces, *blackPieces;
     whitePieces = (Object*)malloc(16 * sizeof(Object));
@@ -426,9 +466,9 @@ int main() {
     ownNum(blackPieces);
     // 출력 예시
     for (i = 0; i < 16; i++) {
-        printf("%s %d %d %s %d %d %d %d %s\n", whitePieces[i].team, whitePieces[i].isDead, whitePieces[i].isPromoted,
-               whitePieces[i].objectType, whitePieces[i].xPos, whitePieces[i].yPos, whitePieces[i].isMovement,
-               whitePieces[i].ownNum, whitePieces[i].PromotedObject);
+        printf("%s %d %s %d %d %d\n", whitePieces[i].team, whitePieces[i].isDead,
+               whitePieces[i].objectType, whitePieces[i].xPos, whitePieces[i].yPos,
+               whitePieces[i].ownNum);
     }
     check_obj(whitePieces,1, 8, 1, 1);
     free(whitePieces);
