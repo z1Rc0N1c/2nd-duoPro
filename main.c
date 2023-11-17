@@ -17,6 +17,86 @@ typedef struct Position{
     int ownNumber;
 }Pos;
 int i;
+int obj_check_die(Object *checkee, Pos *checker){
+    int j;
+    if(checker->team == "white"){
+        for(j=0; j<16; j++){
+            if(checkee[j].team == "black"){
+                if(checkee[j].xPos == checker->xPosi&&checkee[j].yPos == checker->yPosi){
+                    checkee[j].isDead = 1;
+                    return 0;
+                }
+            }else{
+                return -1;
+            }
+
+        }
+    }else if(checker->team == "black"){
+        for(j=0; j<16; j++){
+            if(checkee[j].team == "white"){
+                if(checkee[j].xPos == checker->xPosi&&checkee[j].yPos == checker->yPosi){
+                    checkee[j].isDead = 1;
+                    return 0;
+                }
+            }else{
+                return -1;
+            }
+        }
+    }else{
+        return -1;
+    }
+}//기물이 죽는지 확인하는 함수
+int Promotion(Object *Origin, Pos *position, int select){
+    if(position->team == "white") {
+        if (Origin->objectType == "Pawn") {
+            if (position->xPosi == 8) {
+                switch (select) {
+                    case 1:
+                        strcpy(Origin->objectType, "Rook");
+                        break;
+                    case 2:
+                        strcpy(Origin->objectType, "Knight");
+                        break;
+                    case 3:
+                        strcpy(Origin->objectType, "Bishop");
+                        break;
+                    case 4:
+                        strcpy(Origin->objectType, "Queen");
+                        break;
+                }
+            }
+            else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(position->team == "black"){
+        if (Origin->objectType == "Pawn") {
+            if (position->xPosi == 8) {
+                switch (select) {
+                    case 1:
+                        strcpy(Origin->objectType, "Rook");
+                        break;
+                    case 2:
+                        strcpy(Origin->objectType, "Knight");
+                        break;
+                    case 3:
+                        strcpy(Origin->objectType, "Bishop");
+                        break;
+                    case 4:
+                        strcpy(Origin->objectType, "Queen");
+                        break;
+                }
+            }
+            else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }
+}//프로모션하는 함수로, select 매개변수로 변경할 수 있다.
 void assignMent(Object* objects, const char* team, int objType, int size) {//기물 선언용 함수
     for (i = 0; i < size; i++) {
         strncpy(objects[i].team, team, sizeof(objects[i].team));
@@ -51,8 +131,8 @@ void assignMent(Object* objects, const char* team, int objType, int size) {//기
                 case 2: objects[i].yPos = (i == 0) ? 1 : 8; break;
                 case 3: objects[i].yPos = (i == 0) ? 2 : 7; break;
                 case 4: objects[i].yPos = (i == 0) ? 3 : 6; break;
-                case 5: objects[i].yPos = 4; break;
-                case 6: objects[i].yPos = 5; break;
+                case 5: objects[i].yPos = 5; break;
+                case 6: objects[i].yPos = 4; break;
                 default: break;
             }
         } else {
@@ -68,7 +148,7 @@ void assignMent(Object* objects, const char* team, int objType, int size) {//기
         }
     }
 
-}
+}//선언하는 함수, 위치까지 다 지정해 줌
 void ownNum(Object *a){
     if(a->team == "white"){
         for(i=0; i<16; i++){
@@ -237,6 +317,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             }
                         }
                     }
+                    Promotion(a, b, 1);
                 }
                 break;
 
@@ -326,8 +407,9 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         if (x == b->xPosi - 1 && y == b->yPosi) {
                             b->xPosi -= 1;
                         }
-                        break;
+
                     }
+                    Promotion(a, b, 1);
                 }break;
                 case 2:
                     for (j = 0; j < size; j++) {
@@ -396,48 +478,31 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
         }
     }
 }
-int checkMate(Object *a, Pos *b, int size, int x, int y){
+int is_checkMate(Object *Checker, Pos *Checkee){
+    int j;
+    if(Checkee->team == "white"){
+        for(j=17; j<33;j++){
+            if(Checker[j].objectType == "Pawn"){
 
-}
-int Promotion(Pos *b, int objType,int size, int select){
-    if(b->team == "white") {
-        if (objType == 1) {
-            if (b->xPosi == 8) {
-                switch (select) {
-                    case 1:
-                        objType = 2;
-                        break;
-                    case 2:
-                        objType = 3;
-                        break;
-                    case 3:
-                        objType = 4;
-                        break;
-                    case 4:
-                        objType = 5;
-                        break;
-                }
+            }else if(Checker[j].objectType == "Rook"){
+
+            }else if(Checker[j].objectType == "Knight"){
+
+            }else if(Checker[j].objectType == "Bishop"){
+
+            }else if(Checker[j].objectType == "Queen"){
+                if(Checkee->xPosi-Checker[j].xPos == Checkee->yPosi-Checker[j].xPos){
+
+                }else if(Checkee)
+            }else if(Checker[j].objectType == "King"){
+
+            }else{
+                return -2;//뭔가 잘못되었다는 신호
             }
         }
-    }else if(b->team == "black"){
-        if (objType == 1) {
-            if (b->xPosi == 1) {
-                switch (select) {
-                    case 1:
-                        objType = 2;
-                        break;
-                    case 2:
-                        objType = 3;
-                        break;
-                    case 3:
-                        objType = 4;
-                        break;
-                    case 4:
-                        objType = 5;
-                        break;
-                }
-            }
-        }
+
+    }else if(Checkee->team == "black"){
+
     }
 }
 int main() {
