@@ -1,11 +1,7 @@
 #include "pch.h"
 #include "Game.h" // include!
 
-// 필요한 변수는 전역 변수로 전언해서 사용합니다.
-typedef struct Object {
-	int xpos;
-} Object;
-
+ //필요한 변수는 전역 변수로 전언해서 사용합니다.
 typedef struct Slot {
 	int x, y;
 	int positionX;
