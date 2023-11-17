@@ -1,0 +1,32 @@
+﻿  animation.c
+  chessF.c
+C:\Users\swimk\GithubRepository\2nd-duoPro\chessF.c(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Users\swimk\GithubRepository\2nd-duoPro\chessF.c(1,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'pch.h': No such file or directory
+  font.c
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\font.c(57,24): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\font.c(58,24): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Game.c
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Game.c(5,23): error C2011: 'Object': 'struct' 형식 재정의
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\chessF.h(3,16): message : 'Object' 선언을 참조하십시오.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Game.c(33,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Game.c(101,24): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Game.c(89,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+  image.c
+  input.c
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\input.c(29,30): warning C4090: '함수': 'const' 한정자가 서로 다릅니다.
+  linkedList.c
+  main.c
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\main.c(5,12): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
+  pch.c
+  Start.c
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Start.c(22,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Start.c(84,22): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\Start.c(76,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+  timer.c
+  window.c
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\window.c(62,14): warning C4133: '=': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\window.c(77,11): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\window.c(117,25): warning C4133: '함수': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+  코드를 생성하고 있습니다...
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\input.c(42): warning C4715: 'getKeyState': 모든 제어 경로에서 값을 반환하지는 않습니다.
+F:\Coding\VisualStudio\ChessC\Sunrin_SDL_Project\input.c(65): warning C4715: 'getButtonState': 모든 제어 경로에서 값을 반환하지는 않습니다.
