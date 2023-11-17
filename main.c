@@ -211,71 +211,195 @@ int Pawn_diag(Object *a, Pos *b, int size){
     }
 
 }//폰이 대각선으로 움직일 수 있는지 확인하는 함수
-void move_obj(Object *a, Pos *b,int objType, int size, int x, int y){
+void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
     int j;
-    if(a->team == "white"){
+    if (a->team == "white") {
         switch (objType) {
             case 1:
-                for(j=0; j<size; j++){
-                    if(Pawn_diag(a, b, size) == 2){
-                        if(x == b->xPosi +1&&y == b->yPosi+1){
-                            b->xPosi +=1;
-                            b->yPosi +=1;
+                for (j = 0; j < size; j++) {
+                    if (Pawn_diag(a, b, size) == 2) {
+                        if (x == b->xPosi + 1 && y == b->yPosi + 1) {
+                            b->xPosi += 1;
+                            b->yPosi += 1;
                         }
 
-                    }else if(Pawn_diag(a, b, size) == 1){
-                        if(x == b->xPosi +1&&y == b->yPosi-1){
-                            b->xPosi+=1;
-                            b->yPosi-=1;
+                    } else if (Pawn_diag(a, b, size) == 1) {
+                        if (x == b->xPosi + 1 && y == b->yPosi - 1) {
+                            b->xPosi += 1;
+                            b->yPosi -= 1;
                         }
-                    }else if(Pawn_diag(a, b, size) == 0){
-                        if(b->xPosi == 2){
-                            if(x == b->xPosi+2&&y == b->yPosi){
-                                b->xPosi +=2;
-                            }else if(x == b->xPosi+1&&y == b->yPosi){
-                                b->xPosi +=1;
+                    } else if (Pawn_diag(a, b, size) == 0) {
+                        if (b->xPosi == 2) {
+                            if (x == b->xPosi + 2 && y == b->yPosi) {
+                                b->xPosi += 2;
+                            } else if (x == b->xPosi + 1 && y == b->yPosi) {
+                                b->xPosi += 1;
                             }
-                        }else{
-                            if(x == b->xPosi+1&&y == b->yPosi){
-                                b->xPosi+=1;
+                        } else {
+                            if (x == b->xPosi + 1 && y == b->yPosi) {
+                                b->xPosi += 1;
                             }
                         }
                     }
-                }break;
+                }
+                break;
 
-            case 2:break;
-            case 3:break;
-            case 4:break;
-            case 5:break;
-            case 6:break;
-            default:break;
+            case 2:
+                for (j = 0; j < size; j++) {
+                    if ((x == b->xPosi + j && y == b->yPosi) || (x == b->xPosi - j && b->yPosi)) {
+                        b->xPosi = x;
+                    } else if ((x == b->xPosi && y == b->yPosi + j) || x == b->xPosi && b->yPosi - j) {
+                        b->yPosi = y;
+                    }
+                }
+                break;
+            case 3:
+                for (j = 0; j < size; j++) {
+                    if ((x == b->xPosi + 2 && (y == b->yPosi + 1) || y == b->yPosi - 1)) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    } else if ((x == b->xPosi + 1) || (x == b->yPosi - 1) && y == b->yPosi + 2) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    } else if (x == b->xPosi - 2 && (y == b->yPosi + 1) || (y == b->yPosi - 1)) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    } else if ((x == b->xPosi + 1) || (x == b->xPosi - 1) && y == b->yPosi - 2) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    }
+                }
+
+                break;
+            case 4:
+                for (j = 0; j < size; j++) {
+                    if ((x == b->xPosi + j && y == b->yPosi + j) || (x == b->xPosi - j && y == b->yPosi - j) ||
+                        (x == b->xPosi - j && y == b->yPosi + j) || (x == b->xPosi + j && y == b->yPosi - j)) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    }
+                }
+                break;
+            case 5:
+                for (j = 0; j < size; j++) {
+                    if ((x == b->xPosi + j && y == b->yPosi) || (x == b->xPosi - j && b->yPosi)) {
+                        b->xPosi = x;
+                    } else if ((x == b->xPosi && y == b->yPosi + j) || x == b->xPosi && b->yPosi - j) {
+                        b->yPosi = y;
+                    } else if ((x == b->xPosi + j && y == b->yPosi + j) || (x == b->xPosi - j && y == b->yPosi - j) ||
+                               (x == b->xPosi - j && y == b->yPosi + j) || (x == b->xPosi + j && y == b->yPosi - j)) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    }
+                }
+                break;
+            case 6:
+                for (j = 0; j < size; j++) {
+                    if ((x == b->xPosi + 1 && y == b->yPosi) || (x == b->xPosi - 1 && b->yPosi)) {
+                        b->xPosi = x;
+                    } else if ((x == b->xPosi && y == b->yPosi + 1) || x == b->xPosi && b->yPosi - 1) {
+                        b->yPosi = y;
+                    } else if ((x == b->xPosi + 1 && y == b->yPosi + 1) || (x == b->xPosi - 1 && y == b->yPosi - 1) ||
+                               (x == b->xPosi - 1 && y == b->yPosi + 1) || (x == b->xPosi + 1 && y == b->yPosi - 1)) {
+                        b->xPosi = x;
+                        b->yPosi = y;
+                    }
+                }
+                break;
+            default:
+                break;
         }
-    }else{
+    } else {
         switch (objType) {
             case 1:
-                for(j=0; j<size; j++){
-                    if(Pawn_diag(a, b, size) == 2){
-                        b->xPosi -=1;
-                        b->yPosi +=1;
-                    }else if(Pawn_diag(a, b, size) == 1){
-                        b->xPosi -=1;
-                        b->yPosi +=1;
-                    }else if(Pawn_diag(a, b, size) == 0){
-                        if(b->xPosi == 7){
-                            b->xPosi -=2;
-                        }else{
-                            b->xPosi -=1;
+                for (j = 0; j < size; j++) {
+                    if (Pawn_diag(a, b, size) == 2) {
+                        b->xPosi -= 1;
+                        b->yPosi += 1;
+                    } else if (Pawn_diag(a, b, size) == 1) {
+                        b->xPosi -= 1;
+                        b->yPosi += 1;
+                    } else if (Pawn_diag(a, b, size) == 0) {
+                        if (b->xPosi == 7) {
+                            b->xPosi -= 2;
+                        } else {
+                            b->xPosi -= 1;
                         }
 
-                    }else{
+                    } else {
+                        if (x == b->xPosi - 1 && y == b->yPosi) {
+                            b->xPosi -= 1;
+                        }
                         break;
                     }
                 }break;
-            case 2:
+                case 2:
+                    for (j = 0; j < size; j++) {
+                        if ((x == b->xPosi - j && y == b->yPosi) || (x == b->xPosi + j && b->yPosi)) {
+                            b->xPosi = x;
+                        } else if ((x == b->xPosi && y == b->yPosi + j) || x == b->xPosi && b->yPosi - j) {
+                            b->yPosi = y;
+                        }
+                    }
+                    break;
+                case 3:
+                    for (j = 0; j < size; j++) {
+                        if ((x == b->xPosi + 2 && (y == b->yPosi + 1) || y == b->yPosi - 1)) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        } else if ((x == b->xPosi + 1) || (x == b->yPosi - 1) && y == b->yPosi + 2) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        } else if (x == b->xPosi - 2 && (y == b->yPosi + 1) || (y == b->yPosi - 1)) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        } else if ((x == b->xPosi + 1) || (x == b->xPosi - 1) && y == b->yPosi - 2) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        }
+                    }
+
+                    break;
+                case 4:
+                    for (j = 0; j < size; j++) {
+                        if ((x == b->xPosi + j && y == b->yPosi + j) || (x == b->xPosi - j && y == b->yPosi - j) ||
+                            (x == b->xPosi - j && y == b->yPosi + j) || (x == b->xPosi + j && y == b->yPosi - j)) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        }
+                    }
+                    break;
+                case 5:
+                    for (j = 0; j < size; j++) {
+                        if ((x == b->xPosi + j && y == b->yPosi) || (x == b->xPosi - j && b->yPosi)) {
+                            b->xPosi = x;
+                        } else if ((x == b->xPosi && y == b->yPosi + j) || x == b->xPosi && b->yPosi - j) {
+                            b->yPosi = y;
+                        } else if ((x == b->xPosi + j && y == b->yPosi + j) || (x == b->xPosi - j && y == b->yPosi - j) ||
+                                   (x == b->xPosi - j && y == b->yPosi + j) || (x == b->xPosi + j && y == b->yPosi - j)) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        }
+                    }
+                    break;
+                case 6:
+                    for (j = 0; j < size; j++) {
+                        if ((x == b->xPosi + 1 && y == b->yPosi) || (x == b->xPosi - 1 && b->yPosi)) {
+                            b->xPosi = x;
+                        } else if ((x == b->xPosi && y == b->yPosi + 1) || x == b->xPosi && b->yPosi - 1) {
+                            b->yPosi = y;
+                        } else if ((x == b->xPosi + 1 && y == b->yPosi + 1) || (x == b->xPosi - 1 && y == b->yPosi - 1) ||
+                                   (x == b->xPosi - 1 && y == b->yPosi + 1) || (x == b->xPosi + 1 && y == b->yPosi - 1)) {
+                            b->xPosi = x;
+                            b->yPosi = y;
+                        }
+                    }
+                    break;
+                default:
+                    break;
         }
     }
 }
-
 int main() {
     Object *whitePieces, *blackPieces;
     whitePieces = (Object*)malloc(16 * sizeof(Object));
