@@ -478,31 +478,143 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
         }
     }
 }
-int is_checkMate(Object *Checker, Pos *Checkee){
+int is_Check(Object *Checker, Pos *Checkee){
     int j;
     if(Checkee->team == "white"){
         for(j=17; j<33;j++){
             if(Checker[j].objectType == "Pawn"){
-
+                int Check;
+                Check = 0;
+                if ((Checker[j].xPos + 1 == Checkee->xPosi) &&
+                    ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos - 1 == Checkee->yPosi)))
+                    Check++;
+                if(Check != 0){
+                    return 1;
+                }
             }else if(Checker[j].objectType == "Rook"){
-
+                int check = 0;
+                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
+                    check++;
+                }
+                if(check != 0){
+                    return 1;
+                }
             }else if(Checker[j].objectType == "Knight"){
-
+                int Check;
+                Check = 0;
+                if(((Checker[j].xPos+2 == Checkee->xPosi)&&((Checker[j].yPos+1 == Checkee->yPosi)||(Checker[j].yPos-1)) == Checkee->yPosi)){
+                    Check++;
+                }else if(((Checker[j].xPos+1 == Checkee->xPosi)||(Checker[j].xPos-1 == Checkee->xPosi))&&(Checker[j].yPos+2 == Checkee->yPosi)){
+                    Check++;
+                }else if((Checker[j].xPos-2 == Checkee->xPosi)&&((Checker[j].yPos +1 == Checkee->yPosi)||(Checker[j].yPos == Checkee->yPosi))){
+                    Check++;
+                }else if(((Checker[j].xPos+1 == Checkee->xPosi)||(Checker[j].xPos-1 == Checkee->xPosi))&&(Checker[j].yPos-2 == Checkee->yPosi)){
+                    Check++;
+                }
+                if(Check != 0){
+                    return 1;
+                }
             }else if(Checker[j].objectType == "Bishop"){
+                int check_Check = 0;
+                for(int h = 1;h<9; h++){
+                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
+                        check_Check++;
+                    }
+                }
+                if(check_Check != 0){
+                    return 1;
+                }
 
             }else if(Checker[j].objectType == "Queen"){
-                if(Checkee->xPosi-Checker[j].xPos == Checkee->yPosi-Checker[j].xPos){
-
-                }else if(Checkee)
+                int check = 0;
+                for(int h = 1; h < 9; h++){
+                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
+                        check++;
+                    }
+                }
+                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
+                    check++;
+                }
+                if(check != 0){
+                    return 1;
+                }
             }else if(Checker[j].objectType == "King"){
-
+                return 0;
             }else{
                 return -2;//뭔가 잘못되었다는 신호
             }
         }
 
-    }else if(Checkee->team == "black"){
+    }else if(Checkee->team == "black") {
+        for (j = 1; j < 17; j++) {
+            if (Checker[j].objectType == "Pawn") {
+                int Check;
+                Check = 0;
+                if ((Checker[j].xPos - 1 == Checkee->xPosi) &&
+                    ((Checker[j].yPos - 1 == Checkee->yPosi) || (Checker[j].yPos + 1 == Checkee->yPosi)))
+                    Check++;
+                if (Check != 0) {
+                    return 1;
+                }
+            } else if (Checker[j].objectType == "Rook") {
+                int check = 0;
+                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
+                    check++;
+                }
+                if (check != 0) {
+                    return 1;
+                }
+            } else if (Checker[j].objectType == "Knight") {
+                int Check;
+                Check = 0;
+                if (((Checker[j].xPos + 2 == Checkee->xPosi) &&
+                     ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos - 1)) == Checkee->yPosi)) {
+                    Check++;
+                } else if (((Checker[j].xPos + 1 == Checkee->xPosi) || (Checker[j].xPos - 1 == Checkee->xPosi)) &&
+                           (Checker[j].yPos + 2 == Checkee->yPosi)) {
+                    Check++;
+                } else if ((Checker[j].xPos - 2 == Checkee->xPosi) &&
+                           ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos == Checkee->yPosi))) {
+                    Check++;
+                } else if (((Checker[j].xPos + 1 == Checkee->xPosi) || (Checker[j].xPos - 1 == Checkee->xPosi)) &&
+                           (Checker[j].yPos - 2 == Checkee->yPosi)) {
+                    Check++;
+                }
+                if (Check != 0) {
+                    return 1;
+                }
+            } else if (Checker[j].objectType == "Bishop") {
+                int check_Check = 0;
+                for (int h = 1; h < 9; h++) {
+                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
+                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
+                        check_Check++;
+                    }
+                }
+                if (check_Check != 0) {
+                    return 1;
+                }
 
+            } else if (Checker[j].objectType == "Queen") {
+                int check = 0;
+                for (int h = 1; h < 9; h++) {
+                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
+                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
+                        check++;
+                    }
+                }
+                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
+                    check++;
+                }
+                if (check != 0) {
+                    return 1;
+                }
+            } else if (Checker[j].objectType == "King") {
+                return 0;
+            } else {
+                return -2;//뭔가 잘못되었다는 신호
+            }
+        }
     }
 }
 int main() {
