@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 // 씬별 초기화 함수를 정의합니다.
 // 여기서는 사용할 자료를 초기화 합니다.
 void Start_Init();

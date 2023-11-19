@@ -1,8 +1,5 @@
-﻿  Start.c
-C:\Users\swimk\2nd-duoPro\ChessC\Sunrin_SDL_Project\Start.c(22,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\2nd-duoPro\ChessC\Sunrin_SDL_Project\Start.c(84,22): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\2nd-duoPro\ChessC\Sunrin_SDL_Project\Start.c(76,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-  main.c
-C:\Users\swimk\2nd-duoPro\ChessC\Sunrin_SDL_Project\main.c(5,12): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
-  코드를 생성하고 있습니다...
-  Sunrin_SDL_Project.vcxproj -> C:\Users\swimk\2nd-duoPro\ChessC\x64\Debug\Sunrin_SDL_Project.exe
+﻿  Game.c
+C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(14,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(116,24): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(104,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+  Sunrin_SDL_Project.vcxproj -> C:\Users\swimk\Coding\2nd-duoPro\ChessC\x64\Debug\Sunrin_SDL_Project.exe

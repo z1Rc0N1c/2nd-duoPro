@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Start.h" // include!
 
 // 필요한 변수는 전역 변수로 전언해서 사용합니다.
 typedef struct Scene {
