@@ -1,13 +1,6 @@
 #include "pch.h"
 
- //필요한 변수는 전역 변수로 전언해서 사용합니다.
-
-
-
 GameScene gameScene;
-
-
-
 
 void GameScene_Init()
 {
@@ -30,20 +23,8 @@ void GameScene_Init()
 	gameScene.objectImages[1][3] = loadTexture(renderer, "./resources/Wbishop.png");
 	gameScene.objectImages[1][4] = loadTexture(renderer, "./resources/Wqueen.png");
 	gameScene.objectImages[1][5] = loadTexture(renderer, "./resources/Wking.png");
+	gameScene.selectIcon = loadTexture(renderer, "./resources/SelectIcon.png");
 
-
-	////슬롯 초기호화
-	//for (int i = 0; i < 8; i++) {
-	//	for (int j = 0; j < 8; j++) {
-	//		Slot* newNode = (Slot*)malloc(sizeof(Node));
-	//		newNode->x = i;
-	//		newNode->y = j;
-	//		newNode->object = NULL;
-	//		newNode->positionX = gameScene.board.x + (gameScene.board.w / 8) * (i + 1);
-	//		newNode->positionY = gameScene.board.y + (gameScene.board.h / 8) * (j + 1);
-	//		gameScene.nodeArray[i][j] = newNode;
-	//	}
-	//}
 	SDL_Color tempColor1 = { 102, 153, 102, 255 };
 	SDL_Color tempColor2 = { 255, 255, 204, 255 };
 
@@ -85,9 +66,25 @@ void GameScene_Update()
 	int mouseX, mouseY = 0;
 	getCurrentMousePos(&mouseX, &mouseY);
 
-	int fixedMouseX = mouseX - gameScene.board.x;
-	int fixedMouseY = mouseY - gameScene.board.y;
+	int fixedMouseX = mouseX - gameScene.board.x - 50;
+	int fixedMouseY = mouseY - gameScene.board.y - 50;
+	if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		if (fixedMouseX >= 0 && fixedMouseX < 800 && fixedMouseY >= 0 && fixedMouseY < 800) {
+			Slot* targetSlot = gameScene.nodeArray[fixedMouseX / 100][fixedMouseY / 100];
+			if (targetSlot) {
+				if (gameScene.selectedArray)
+					gameScene.selectedArray = (gameScene.selectedArray->x == targetSlot->x
+						&& gameScene.selectedArray->y == targetSlot->y) ?
+					NULL : targetSlot;
+				else gameScene.selectedArray = targetSlot;
+			}
 
+
+
+		}
+	}
+
+	printf("%d", (gameScene.selectedArray) ? 1 : 0);
 
 	//if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
 	//	// startButton이 눌렸는지 체크한다.
@@ -131,6 +128,12 @@ void GameScene_Render()
 		}
 	}
 
+	if (gameScene.selectedArray) {
+		//drawTextureWithRatio(renderer, gameScene.selectedArray->positionX - 50, gameScene.selectedArray->positionY - 50, 0.4, 0.4,
+		//	gameScene.selectIcon);
+		drawFilledCircle(renderer, gameScene.selectedArray->positionX, gameScene.selectedArray->positionY, 30, 200, 200, 200, 150);
+
+	}
 
 
 	//drawTexture(renderer, 0, 0, loadTexture(renderer, "D:\Coding\VisualStudio\ZOMVILLE\Sunrin_SDL_Project\resources"));

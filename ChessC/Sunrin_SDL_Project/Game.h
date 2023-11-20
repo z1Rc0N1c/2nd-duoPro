@@ -7,8 +7,11 @@ typedef struct GameScene {
 
 	SDL_Color mapColor[2];
 	SDL_Texture* objectImages[2][6];
+	SDL_Texture* selectIcon;
 
 	int quit;
+	struct Slot* selectedArray;
+
 } GameScene;
 
 typedef struct Slot {
