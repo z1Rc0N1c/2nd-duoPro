@@ -12,60 +12,115 @@
 //} Object;
 
 int i;
-void assignMent(Object* objects, const char* team, int objType, int size) {//기물 선언용 함수
-    for (i = 0; i < size; i++) {
-        strncpy(objects[i].team, team, sizeof(objects[i].team));
-        objects[i].team[sizeof(objects[i].team) - 1] = '\0';
-        objects[i].isDead = 0;
-        objects[i].isPromoted = 0;
+Slot* slots[8][8];
 
-        if (strcmp(objects[i].team, "white") == 0) {
-            switch (objType) {
-                case 1: strcpy(objects[i].objectType, "Pawn"); objects[i].xPos = 2; break;
-                case 2: strcpy(objects[i].objectType, "Rook"); objects[i].xPos = 1; break;
-                case 3: strcpy(objects[i].objectType, "Knight"); objects[i].xPos = 1; break;
-                case 4: strcpy(objects[i].objectType, "Bishop"); objects[i].xPos = 1; break;
-                case 5: strcpy(objects[i].objectType, "Queen"); objects[i].xPos = 1; break;
-                case 6: strcpy(objects[i].objectType, "King"); objects[i].xPos = 1; break;
-                default: break;
-            }
-        } else {
-            switch (objType) {
-                case 1: strcpy(objects[i].objectType, "Pawn"); objects[i].xPos = 7; break;
-                case 2: strcpy(objects[i].objectType, "Rook"); objects[i].xPos = 8; break;
-                case 3: strcpy(objects[i].objectType, "Knight"); objects[i].xPos = 8; break;
-                case 4: strcpy(objects[i].objectType, "Bishop"); objects[i].xPos = 8; break;
-                case 5: strcpy(objects[i].objectType, "Queen"); objects[i].xPos = 8; break;
-                case 6: strcpy(objects[i].objectType, "King"); objects[i].xPos = 8; break;
-                default: break;
-            }
+void Assign(int team, int type, int x, int y) {
+    Object* obj = (Object*)malloc(sizeof(Object));
+    obj->xPos = x;
+    obj->yPos = y;
+    obj->team = team;
+    obj->objectType = type;
+
+    slots[x][y]->object = obj;
+}
+
+void assignMent(GameScene* gameScene) {//기물 선언용 함수
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Slot* newNode = (Slot*)malloc(sizeof(Node));
+            newNode->x = i;
+            newNode->y = j;
+            newNode->object = NULL;
+            newNode->positionX = gameScene->board.x + (gameScene->board.w / 8) * (i + 1);
+            newNode->positionY = gameScene->board.y + (gameScene->board.h / 8) * (j + 1);
+            slots[i][j] = newNode;
         }
-
-        if (strcmp(objects[i].team, "white") == 0) {
-            switch (objType) {
-                case 1: objects[i].yPos = i + 1; break;
-                case 2: objects[i].yPos = (i == 0) ? 1 : 8; break;
-                case 3: objects[i].yPos = (i == 0) ? 2 : 7; break;
-                case 4: objects[i].yPos = (i == 0) ? 3 : 6; break;
-                case 5: objects[i].yPos = 4; break;
-                case 6: objects[i].yPos = 5; break;
-                default: break;
-            }
-        } else {
-            switch (objType) {
-                case 1: objects[i].yPos = i + 1; break;
-                case 2: objects[i].yPos = (i == 0) ? 1 : 8; break;
-                case 3: objects[i].yPos = (i == 0) ? 2 : 7; break;
-                case 4: objects[i].yPos = (i == 0) ? 3 : 6; break;
-                case 5: objects[i].yPos = 4; break;
-                case 6: objects[i].yPos = 5; break;
-                default: break;
-            }
-        }
-
-        objects[i].isMovement = 0;
-        objects[i].PromotedObject[0] = '\0';
     }
+    //흑
+    for (int i = 0; i < 8; i++)
+        Assign(0, 0, 1, i);
+    Assign(0, 1, 0, 0);
+    Assign(0, 1, 0, 7);
+    Assign(0, 2, 0, 1);
+    Assign(0, 2, 0, 6);
+    Assign(0, 3, 0, 2);
+    Assign(0, 3, 0, 5);
+    Assign(0, 4, 0, 3);
+    Assign(0, 5, 0, 4);
+
+    //백
+    for (int i = 0; i < 8; i++)
+        Assign(1, 0, 6, i);
+    Assign(1, 1, 7, 0);
+    Assign(1, 1, 7, 7);
+    Assign(1, 2, 7, 1);
+    Assign(1, 2, 7, 6);
+    Assign(1, 3, 7, 2);
+    Assign(1, 3, 7, 5);
+    Assign(1, 4, 7, 3);
+    Assign(1, 5, 7, 4);
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            gameScene->nodeArray[i][j] = slots[i][j];
+        }
+    }
+    //for (i = 0; i < size; i++) {
+    //    Object thisObject = objects[i];
+    //    strncpy(thisObject.team, team, sizeof(thisObject.team));
+    //    thisObject.team[sizeof(thisObject.team) - 1] = '\0';
+    //    thisObject.isDead = 0;
+
+    //    if (strcmp(thisObject.team, "white") == 0) {
+    //        switch (objType) {
+    //        case 1: strcpy(thisObject.objectType, "Pawn"); thisObject.xPos = 2; break;
+    //        case 2: strcpy(thisObject.objectType, "Rook"); thisObject.xPos = 1; break;
+    //        case 3: strcpy(thisObject.objectType, "Knight"); thisObject.xPos = 1; break;
+    //        case 4: strcpy(thisObject.objectType, "Bishop"); thisObject.xPos = 1; break;
+    //        case 5: strcpy(thisObject.objectType, "Queen"); thisObject.xPos = 1; break;
+    //        case 6: strcpy(thisObject.objectType, "King"); thisObject.xPos = 1; break;
+    //        default: break;
+    //        }
+    //    }
+    //    else {
+    //        switch (objType) {
+    //        case 1: strcpy(thisObject.objectType, "Pawn"); thisObject.xPos = 7; break;
+    //        case 2: strcpy(thisObject.objectType, "Rook"); thisObject.xPos = 8; break;
+    //        case 3: strcpy(thisObject.objectType, "Knight"); thisObject.xPos = 8; break;
+    //        case 4: strcpy(thisObject.objectType, "Bishop"); thisObject.xPos = 8; break;
+    //        case 5: strcpy(thisObject.objectType, "Queen"); thisObject.xPos = 8; break;
+    //        case 6: strcpy(thisObject.objectType, "King"); thisObject.xPos = 8; break;
+    //        default: break;
+    //        }
+    //    }
+
+    //    if (strcmp(thisObject.team, "white") == 0) {
+    //        switch (objType) {
+    //        case 1: thisObject.yPos = i + 1; break;
+    //        case 2: thisObject.yPos = (i == 0) ? 1 : 8; break;
+    //        case 3: thisObject.yPos = (i == 0) ? 2 : 7; break;
+    //        case 4: thisObject.yPos = (i == 0) ? 3 : 6; break;
+    //        case 5: thisObject.yPos = 5; break;
+    //        case 6: thisObject.yPos = 4; break;
+    //        default: break;
+    //        }
+    //    }
+    //    else {
+    //        switch (objType) {
+    //        case 1: thisObject.yPos = i + 1; break;
+    //        case 2: thisObject.yPos = (i == 0) ? 1 : 8; break;
+    //        case 3: thisObject.yPos = (i == 0) ? 2 : 7; break;
+    //        case 4: thisObject.yPos = (i == 0) ? 3 : 6; break;
+    //        case 5: thisObject.yPos = 4; break;
+    //        case 6: thisObject.yPos = 5; break;
+    //        default: break;
+    //        }
+    //    }
+    //    (slots[thisObject.xPos][thisObject.yPos]).object = &thisObject;
+    //}
+
+
+
 }
 void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
     int j;

@@ -41,7 +41,7 @@ void drawFilledTriangle(SDL_Surface* renderer, int x1, int y1, int x2, int y2, i
 void drawFilledCircle(SDL_Surface* renderer, int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     for (int w = 0; w < radius * 2; w++)
     {
         for (int h = 0; h < radius * 2; h++)

@@ -1,28 +1,6 @@
 #include "pch.h"
-#include "Game.h" // include!
 
- //필요한 변수는 전역 변수로 전언해서 사용합니다.
-typedef struct Slot {
-	int x, y;
-	int positionX;
-	int positionY;
-	Object* object;
-} Slot;
-
-typedef struct GameScene {
-	// 씬에서 전역적으로 사용할 변수는 구조체로 랩핑해서 사용합니다.
-
-	SDL_Rect board;
-	Slot* nodeArray[8][8];
-
-	SDL_Color mapColor[2];
-
-	int quit;
-} GameScene;
 GameScene gameScene;
-
-
-
 
 void GameScene_Init()
 {
@@ -33,29 +11,35 @@ void GameScene_Init()
 	gameScene.board.x = SCREEN_WIDTH / 2 - (gameScene.board.w / 2);
 	gameScene.board.y = SCREEN_HEIGHT / 2 - (gameScene.board.h / 2);
 
+	gameScene.objectImages[0][0] = loadTexture(renderer, "./resources/Bpawn.png");
+	gameScene.objectImages[0][1] = loadTexture(renderer, "./resources/Brook.png");
+	gameScene.objectImages[0][2] = loadTexture(renderer, "./resources/Bknight.png");
+	gameScene.objectImages[0][3] = loadTexture(renderer, "./resources/Bbishop.png");
+	gameScene.objectImages[0][4] = loadTexture(renderer, "./resources/Bqueen.png");
+	gameScene.objectImages[0][5] = loadTexture(renderer, "./resources/Bking.png");
+	gameScene.objectImages[1][0] = loadTexture(renderer, "./resources/Wpawn.png");
+	gameScene.objectImages[1][1] = loadTexture(renderer, "./resources/Wrook.png");
+	gameScene.objectImages[1][2] = loadTexture(renderer, "./resources/Wknight.png");
+	gameScene.objectImages[1][3] = loadTexture(renderer, "./resources/Wbishop.png");
+	gameScene.objectImages[1][4] = loadTexture(renderer, "./resources/Wqueen.png");
+	gameScene.objectImages[1][5] = loadTexture(renderer, "./resources/Wking.png");
+	gameScene.selectIcon = loadTexture(renderer, "./resources/SelectIcon.png");
 
-	//슬롯 초기호화
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			Slot* newNode = (Slot*)malloc(sizeof(Node));
-			newNode->x = i;
-			newNode->y = j;
-			newNode->object = NULL;
-			newNode->positionX = gameScene.board.x + (gameScene.board.w / 8) * (i + 1);
-			newNode->positionY = gameScene.board.y + (gameScene.board.h / 8) * (j + 1);
-			gameScene.nodeArray[i][j] = newNode;
-		}
-	}
 	SDL_Color tempColor1 = { 102, 153, 102, 255 };
 	SDL_Color tempColor2 = { 255, 255, 204, 255 };
 
 	gameScene.mapColor[0] = tempColor1;
 	gameScene.mapColor[1] = tempColor2;
 
+	assignMent(&gameScene);
 
-	//말 초기화
 	for (int i = 0; i < 8; i++) {
-
+		for (int j = 0; j < 8; j++) {
+			if (gameScene.nodeArray[i][j]->object)
+				printf("%d", gameScene.nodeArray[i][j]->object->objectType);
+			else printf("_");
+		}
+		printf("\n");
 	}
 
 }
@@ -77,6 +61,38 @@ void GameScene_Event()
 void GameScene_Update()
 {
 	double dt = getDeltaTime();
+
+	// 마우스 위치를 가져옵니다.
+	int mouseX, mouseY = 0;
+	getCurrentMousePos(&mouseX, &mouseY);
+
+	int fixedMouseX = mouseX - gameScene.board.x - 50;
+	int fixedMouseY = mouseY - gameScene.board.y - 50;
+	if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		if (fixedMouseX >= 0 && fixedMouseX < 800 && fixedMouseY >= 0 && fixedMouseY < 800) {
+			Slot* targetSlot = gameScene.nodeArray[fixedMouseX / 100][fixedMouseY / 100];
+			if (targetSlot) {
+				if (gameScene.selectedArray)
+					gameScene.selectedArray = (gameScene.selectedArray->x == targetSlot->x
+						&& gameScene.selectedArray->y == targetSlot->y) ?
+					NULL : targetSlot;
+				else gameScene.selectedArray = targetSlot;
+			}
+
+
+
+		}
+	}
+
+	printf("%d", (gameScene.selectedArray) ? 1 : 0);
+
+	//if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
+	//	// startButton이 눌렸는지 체크한다.
+	//	if (checkCollisionWithPoint(scene.rect_startButton, mouseX, mouseY)) {
+	//		printf("GameScene으로 이동합니다. \n");
+	//		scene.quit = GAME_SCENE;
+	//	}
+	//}
 
 }
 
@@ -101,6 +117,22 @@ void GameScene_Render()
 			colorSwitch = !colorSwitch;
 		}
 		colorSwitch = !colorSwitch;
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			Slot* newNode = gameScene.nodeArray[i][j];
+			if (newNode->object) {
+				drawTextureWithRatio(renderer, newNode->positionX - 50, newNode->positionY - 50, 0.18, 0.18,
+					gameScene.objectImages[newNode->object->team][newNode->object->objectType]);
+			}
+		}
+	}
+
+	if (gameScene.selectedArray) {
+		//drawTextureWithRatio(renderer, gameScene.selectedArray->positionX - 50, gameScene.selectedArray->positionY - 50, 0.4, 0.4,
+		//	gameScene.selectIcon);
+		drawFilledCircle(renderer, gameScene.selectedArray->positionX, gameScene.selectedArray->positionY, 30, 200, 200, 200, 150);
+
 	}
 
 
