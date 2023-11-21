@@ -19,9 +19,9 @@ typedef struct Position{
 int i;
 int obj_check_die(Object *checkee, Pos *checker){
     int j;
-    if(checker->team == "white"){
+    if(strcmp(checker->team, "white") == 0){
         for(j=0; j<16; j++){
-            if(checkee[j].team == "black"){
+            if(strcmp(checkee[j].team, "black") == 0){
                 if(checkee[j].xPos == checker->xPosi&&checkee[j].yPos == checker->yPosi){
                     checkee[j].isDead = 1;
                     return 0;
@@ -31,9 +31,9 @@ int obj_check_die(Object *checkee, Pos *checker){
             }
 
         }
-    }else if(checker->team == "black"){
+    }else if(strcmp(checker->team, "black") == 0){
         for(j=0; j<16; j++){
-            if(checkee[j].team == "white"){
+            if(strcmp(checkee[j].team, "white") == 0){
                 if(checkee[j].xPos == checker->xPosi&&checkee[j].yPos == checker->yPosi){
                     checkee[j].isDead = 1;
                     return 0;
@@ -47,8 +47,8 @@ int obj_check_die(Object *checkee, Pos *checker){
     }
 }//기물이 죽는지 확인하는 함수
 int Promotion(Object *Origin, Pos *position, int select){
-    if(position->team == "white") {
-        if (Origin->objectType == "Pawn") {
+    if(strcmp(position->team, "white") == 0) {
+        if (strcmp(Origin->objectType, "Pawn") == 0) {
             if (position->xPosi == 8) {
                 switch (select) {
                     case 1:
@@ -63,6 +63,7 @@ int Promotion(Object *Origin, Pos *position, int select){
                     case 4:
                         strcpy(Origin->objectType, "Queen");
                         break;
+                    default:break;
                 }
             }
             else{
@@ -71,8 +72,8 @@ int Promotion(Object *Origin, Pos *position, int select){
         }else{
             return 0;
         }
-    }else if(position->team == "black"){
-        if (Origin->objectType == "Pawn") {
+    }else if(strcmp(position->team, "black") == 0){
+        if (strcmp(Origin->objectType, "Pawn") == 0) {
             if (position->xPosi == 8) {
                 switch (select) {
                     case 1:
@@ -87,6 +88,7 @@ int Promotion(Object *Origin, Pos *position, int select){
                     case 4:
                         strcpy(Origin->objectType, "Queen");
                         break;
+                    default:break;
                 }
             }
             else{
@@ -150,7 +152,7 @@ void assignMent(Object* objects, const char* team, int objType, int size) {//기
 
 }//선언하는 함수, 위치까지 다 지정해 줌
 void ownNum(Object *a){
-    if(a->team == "white"){
+    if(strcmp(a->team, "white") == 0){
         for(i=0; i<16; i++){
             a[i].ownNum =i+1;
         }
@@ -161,6 +163,496 @@ void ownNum(Object *a){
     }
 
 }
+int is_Check(Object *Checker, Pos *Checkee){
+    int j;
+    if(strcmp(Checkee->team, "white") == 0){
+        for(j=17; j<33;j++){
+            if(strcmp(Checker[j].objectType, "Pawn") == 0){
+                int Check;
+                Check = 0;
+                if ((Checker[j].xPos + 1 == Checkee->xPosi) &&
+                    ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos - 1 == Checkee->yPosi)))
+                    Check++;
+                if(Check != 0){
+                    return 1;
+                }
+            }else if(strcmp(Checker[j].objectType, "Rook") == 0){
+                int check = 0;
+                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
+                    check++;
+                }
+                if(check != 0){
+                    return 1;
+                }
+            }else if(strcmp(Checker[j].objectType, "Knight") == 0){
+                int Check;
+                Check = 0;
+                if(((Checker[j].xPos+2 == Checkee->xPosi)&&((Checker[j].yPos+1 == Checkee->yPosi)||(Checker[j].yPos-1)) == Checkee->yPosi)){
+                    Check++;
+                }else if(((Checker[j].xPos+1 == Checkee->xPosi)||(Checker[j].xPos-1 == Checkee->xPosi))&&(Checker[j].yPos+2 == Checkee->yPosi)){
+                    Check++;
+                }else if((Checker[j].xPos-2 == Checkee->xPosi)&&((Checker[j].yPos +1 == Checkee->yPosi)||(Checker[j].yPos == Checkee->yPosi))){
+                    Check++;
+                }else if(((Checker[j].xPos+1 == Checkee->xPosi)||(Checker[j].xPos-1 == Checkee->xPosi))&&(Checker[j].yPos-2 == Checkee->yPosi)){
+                    Check++;
+                }
+                if(Check != 0){
+                    return 1;
+                }
+            }else if(strcmp(Checker[j].objectType, "Bishop") == 0){
+                int check_Check = 0;
+                for(int h = 1;h<9; h++){
+                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
+                        check_Check++;
+                    }
+                }
+                if(check_Check != 0){
+                    return 1;
+                }
+
+            }else if(strcmp(Checker[j].objectType, "Queen") == 0){
+                int check = 0;
+                for(int h = 1; h < 9; h++){
+                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
+                        check++;
+                    }
+                }
+                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
+                    check++;
+                }
+                if(check != 0){
+                    return 1;
+                }
+            }else if(strcmp(Checker[j].objectType, "King") == 0){
+                return 0;
+            }else{
+                return -2;//뭔가 잘못되었다는 신호
+            }
+        }
+
+    }else if(strcmp(Checkee->team, "black") == 0) {
+        for (j = 1; j < 17; j++) {
+            if (strcmp(Checker[j].objectType, "Pawn") == 0) {
+                int Check;
+                Check = 0;
+                if ((Checker[j].xPos - 1 == Checkee->xPosi) &&
+                    ((Checker[j].yPos - 1 == Checkee->yPosi) || (Checker[j].yPos + 1 == Checkee->yPosi)))
+                    Check++;
+                if (Check != 0) {
+                    return 1;
+                }
+            } else if (strcmp(Checker[j].objectType, "Rook") == 0)  {
+                int check = 0;
+                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
+                    check++;
+                }
+                if (check != 0) {
+                    return 1;
+                }
+            } else if (strcmp(Checker[j].objectType, "Knight") == 0) {
+                int Check;
+                Check = 0;
+                if (((Checker[j].xPos + 2 == Checkee->xPosi) &&
+                     ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos - 1)) == Checkee->yPosi)) {
+                    Check++;
+                } else if (((Checker[j].xPos + 1 == Checkee->xPosi) || (Checker[j].xPos - 1 == Checkee->xPosi)) &&
+                           (Checker[j].yPos + 2 == Checkee->yPosi)) {
+                    Check++;
+                } else if ((Checker[j].xPos - 2 == Checkee->xPosi) &&
+                           ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos == Checkee->yPosi))) {
+                    Check++;
+                } else if (((Checker[j].xPos + 1 == Checkee->xPosi) || (Checker[j].xPos - 1 == Checkee->xPosi)) &&
+                           (Checker[j].yPos - 2 == Checkee->yPosi)) {
+                    Check++;
+                }
+                if (Check != 0) {
+                    return 1;
+                }
+            } else if (strcmp(Checker[j].objectType, "Bishop") == 0) {
+                int check_Check = 0;
+                for (int h = 1; h < 9; h++) {
+                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
+                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
+                        check_Check++;
+                    }
+                }
+                if (check_Check != 0) {
+                    return 1;
+                }
+
+            } else if (strcmp(Checker[j].objectType, "Queen") == 0) {
+                int check = 0;
+                for (int h = 1; h < 9; h++) {
+                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
+                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
+                        check++;
+                    }
+                }
+                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
+                    check++;
+                }
+                if (check != 0) {
+                    return 1;
+                }
+            } else if (strcmp(Checker[j].objectType, "King") == 0) {
+                return 0;
+            } else {
+                return -2;//뭔가 잘못되었다는 신호
+            }
+        }
+    }
+}
+int autoCheck(Object *er, Pos *ee, int Pos){
+    if(Pos == 1){
+        if(is_Check(er, ee) == 1){
+            ee->xPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->yPosi+=1;
+                if(is_Check(er, ee) == 1){
+                    ee->xPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 2){
+        if(is_Check(er, ee) == 1){
+            ee->xPosi-=1;
+            if(is_Check(er, ee) == 1){
+                ee->yPosi+=1;
+                if(is_Check(er, ee) == 1){
+                    ee->xPosi+=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->yPosi-=1;
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 3){
+        if(is_Check(er, ee) == 1){
+            ee->xPosi-=1;
+            if(is_Check(er, ee) == 1){
+                ee->yPosi-=1;
+                if(is_Check(er, ee) == 1){
+                    ee->xPosi+=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->yPosi+=1;
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 4){
+        if(is_Check(er, ee) == 1){
+            ee->xPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->yPosi-=1;
+                if(is_Check(er, ee) == 1){
+                    ee->xPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->yPosi+=1;
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 5){
+        if(is_Check(er, ee) == 1){
+            ee->yPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->xPosi+=1;
+                if(is_Check(er, ee) == 1){
+                    ee->yPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->yPosi-=1;
+                        if(is_Check(er, ee) == 1){
+                            ee->xPosi-=1;
+                            if(is_Check(er, ee) == 1){
+                                ee->yPosi+=1;
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }else{
+                            return 0;
+                        }
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 6){
+        if(is_Check(er, ee) == 1){
+            ee->xPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->yPosi+=1;
+                if(is_Check(er, ee) == 1){
+                    ee->xPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->xPosi-=1;
+                        if(is_Check(er, ee) == 1){
+                            ee->yPosi-=1;
+                            if(is_Check(er, ee) == 1){
+                                ee->xPosi+=1;
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }else{
+                            return 0;
+                        }
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 7){
+        if(is_Check(er, ee) == 1){
+            ee->yPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->xPosi+=1;
+                if(is_Check(er, ee) == 1){
+                    ee->yPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->yPosi-=1;
+                        if(is_Check(er, ee) == 1){
+                            ee->xPosi-=1;
+                            if(is_Check(er, ee) == 1){
+                                ee->yPosi+=1;
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }else{
+                            return 0;
+                        }
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 8){
+        if(is_Check(er, ee) == 1){
+            ee->xPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->yPosi-=1;
+                if(is_Check(er, ee) == 1){
+                    ee->xPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->xPosi-=1;
+                        if(is_Check(er, ee) == 1){
+                            ee->yPosi+=1;
+                            if(is_Check(er, ee) == 1){
+                                ee->xPosi+=1;
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }else{
+                            return 0;
+                        }
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }else if(Pos == 9){
+        if(is_Check(er, ee) == 1){
+            ee->yPosi+=1;
+            if(is_Check(er, ee) == 1){
+                ee->xPosi+=1;
+                if(is_Check(er, ee) == 1){
+                    ee->yPosi-=1;
+                    if(is_Check(er, ee) == 1){
+                        ee->yPosi-=1;
+                        if(is_Check(er, ee) == 1){
+                            ee->xPosi-=1;
+                            if(is_Check(er, ee) == 1){
+                                ee->xPosi-=1;
+                                if(is_Check(er, ee) == 1){
+                                    ee->yPosi+=1;
+                                    if(is_Check(er, ee) == 1){
+                                        ee->yPosi+=1;
+                                        if(is_Check(er, ee) == 1){
+                                            ee->xPosi+=1;
+                                            ee->yPosi-=1;
+                                            return 1;
+                                        }else{
+                                            return 0;
+                                        }
+                                    }else{
+                                        return 0;
+                                    }
+                                }else{
+                                    return 0;
+                                }
+                            }else{
+                                return 0;
+                            }
+                        }else{
+                            return 0;
+                        }
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+    }
+}
+int is_CheckMate(Object *checker, const char *team){
+    Pos *King;
+    if(strcmp(team, "white") == 0){
+        for(int k = 1; k<17; k++){
+            if(checker[k].ownNum == 16){
+                King->xPosi = checker[k].xPos;
+                King->yPosi = checker[k].yPos;
+                strcpy(King->team, checker[k].team);
+            }
+        }
+    }else if(strcmp(team, "black") == 0){
+        for(int k = 17; k<33; k++){
+            if(checker[k].ownNum == 32){
+                King->xPosi = checker[k].xPos;
+                King->yPosi = checker[k].yPos;
+                strcpy(King->team, checker[k].team);
+            }
+        }
+    }
+
+    if(King->yPosi == 1){
+        if(King->xPosi == 1){
+            if(autoCheck(checker, King, 1)  == 1){
+                return 1;
+            }
+        }else if(King->xPosi == 8){
+            if(autoCheck(checker, King, 2) == 1){
+                return 1;
+            }
+        }else{
+            if(autoCheck(checker, King, 6)){
+                return 1;
+            }
+        }
+    }else if(King->xPosi == 8){
+        if(King->yPosi == 1){
+            if(autoCheck(checker, King, 2) == 1){
+                return 1;
+            }
+        }else if(King->yPosi == 8){
+            if(autoCheck(checker, King, 3) == 1){
+                return 1;
+            }
+        }else{
+            if(autoCheck(checker, King, 7) == 1){
+                return 1;
+            }
+        }
+    }else if(King->yPosi == 8){
+        if(King->xPosi == 1){
+            if(autoCheck(checker, King, 4) == 1){
+                return 1;
+            }
+        }else if(King->xPosi == 8){
+            if(autoCheck(checker, King, 3) == 1){
+                return 1;
+            }
+        }else{
+            if(autoCheck(checker, King, 8) == 1){
+                return 1;
+            }
+        }
+    }else if(King->xPosi == 1){
+        if(King->yPosi == 1){
+            if(autoCheck(checker, King, 1) == 1){
+                return 1;
+            }
+        }else if(King->yPosi == 8){
+            if(autoCheck(checker, King, 4) == 1){
+                return 1;
+            }
+        }else{
+            if(autoCheck(checker, King, 5) == 1){
+                return 1;
+            }
+        }
+    }else{
+        if(autoCheck(checker, King, 9) != 0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+}//얘 호출하면 체크메이트 판정까지 알아서 해 줌
 struct Position check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
     int j;
     struct Position p;
@@ -249,8 +741,8 @@ struct Position check_obj(Object *a, int objType, int size, int x, int y){//클�
 int Pawn_diag(Object *a, Pos *b, int size){
     int j;
     for(j=0; j<size; j++){
-        if(b->team == "white"){
-            if(a[j].team == "black"){
+        if(strcmp(b->team, "white") == 0){
+            if((strcmp(a[j].team, "black") == 0)){
                 if(b->xPosi+1 == a[j].xPos&&b->yPosi+1 == a[j].yPos){
                     b->ownNumber = a[j].ownNum;
                     return 2;
@@ -266,8 +758,8 @@ int Pawn_diag(Object *a, Pos *b, int size){
             }else{
                 return -2;
             }
-        }else if(b->team == "black"){
-            if(a[j].team == "white"){
+        }else if(strcmp(b->team, "black") == 0){
+            if(strcmp(a[j].team, "white") == 0){
                 if(b->xPosi-1 == a[j].xPos&&b->yPosi+1 == a[j].yPos){
                     return 2;
                 }else if(b->xPosi-1 == a[j].xPos&&b->yPosi-1 == a[j].yPos){
@@ -290,6 +782,7 @@ int Pawn_diag(Object *a, Pos *b, int size){
 void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
     int j;
     if (a->team == "white") {
+        char team[6] = "black";
         switch (objType) {
             case 1:
                 for (j = 0; j < size; j++) {
@@ -317,8 +810,11 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             }
                         }
                     }
-                    Promotion(a, b, 1);
+                    if(b->xPosi == 8){
+                        Promotion(a, b, 1);
+                    }
                 }
+                is_CheckMate(a, team);
                 break;
 
             case 2:
@@ -329,6 +825,8 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         b->yPosi = y;
                     }
                 }
+                is_CheckMate(a, team);
+
                 break;
             case 3:
                 for (j = 0; j < size; j++) {
@@ -346,6 +844,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         b->yPosi = y;
                     }
                 }
+                is_CheckMate(a, team);
 
                 break;
             case 4:
@@ -356,6 +855,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         b->yPosi = y;
                     }
                 }
+                is_CheckMate(a, team);
                 break;
             case 5:
                 for (j = 0; j < size; j++) {
@@ -369,6 +869,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         b->yPosi = y;
                     }
                 }
+                is_CheckMate(a, team);
                 break;
             case 6:
                 for (j = 0; j < size; j++) {
@@ -382,11 +883,13 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         b->yPosi = y;
                     }
                 }
+                is_CheckMate(a, team);
                 break;
             default:
                 break;
         }
     } else {
+        char team[6] = "white";
         switch (objType) {
             case 1:
                 for (j = 0; j < size; j++) {
@@ -407,9 +910,11 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                         if (x == b->xPosi - 1 && y == b->yPosi) {
                             b->xPosi -= 1;
                         }
-
                     }
-                    Promotion(a, b, 1);
+                    if(b->xPosi == 1){
+                        Promotion(a, b, 1);
+                    }
+                    is_CheckMate(a, team);
                 }break;
                 case 2:
                     for (j = 0; j < size; j++) {
@@ -419,6 +924,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             b->yPosi = y;
                         }
                     }
+                    is_CheckMate(a, team);
                     break;
                 case 3:
                     for (j = 0; j < size; j++) {
@@ -436,7 +942,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             b->yPosi = y;
                         }
                     }
-
+                    is_CheckMate(a, team);
                     break;
                 case 4:
                     for (j = 0; j < size; j++) {
@@ -446,6 +952,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             b->yPosi = y;
                         }
                     }
+                    is_CheckMate(a, team);
                     break;
                 case 5:
                     for (j = 0; j < size; j++) {
@@ -459,6 +966,7 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             b->yPosi = y;
                         }
                     }
+                    is_CheckMate(a, team);
                     break;
                 case 6:
                     for (j = 0; j < size; j++) {
@@ -472,151 +980,14 @@ void move_obj(Object *a, Pos *b,int objType, int size, int x, int y) {
                             b->yPosi = y;
                         }
                     }
+                    is_CheckMate(a, team);
                     break;
                 default:
                     break;
         }
     }
 }
-int is_Check(Object *Checker, Pos *Checkee){
-    int j;
-    if(Checkee->team == "white"){
-        for(j=17; j<33;j++){
-            if(Checker[j].objectType == "Pawn"){
-                int Check;
-                Check = 0;
-                if ((Checker[j].xPos + 1 == Checkee->xPosi) &&
-                    ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos - 1 == Checkee->yPosi)))
-                    Check++;
-                if(Check != 0){
-                    return 1;
-                }
-            }else if(Checker[j].objectType == "Rook"){
-                int check = 0;
-                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
-                    check++;
-                }
-                if(check != 0){
-                    return 1;
-                }
-            }else if(Checker[j].objectType == "Knight"){
-                int Check;
-                Check = 0;
-                if(((Checker[j].xPos+2 == Checkee->xPosi)&&((Checker[j].yPos+1 == Checkee->yPosi)||(Checker[j].yPos-1)) == Checkee->yPosi)){
-                    Check++;
-                }else if(((Checker[j].xPos+1 == Checkee->xPosi)||(Checker[j].xPos-1 == Checkee->xPosi))&&(Checker[j].yPos+2 == Checkee->yPosi)){
-                    Check++;
-                }else if((Checker[j].xPos-2 == Checkee->xPosi)&&((Checker[j].yPos +1 == Checkee->yPosi)||(Checker[j].yPos == Checkee->yPosi))){
-                    Check++;
-                }else if(((Checker[j].xPos+1 == Checkee->xPosi)||(Checker[j].xPos-1 == Checkee->xPosi))&&(Checker[j].yPos-2 == Checkee->yPosi)){
-                    Check++;
-                }
-                if(Check != 0){
-                    return 1;
-                }
-            }else if(Checker[j].objectType == "Bishop"){
-                int check_Check = 0;
-                for(int h = 1;h<9; h++){
-                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
-                        check_Check++;
-                    }
-                }
-                if(check_Check != 0){
-                    return 1;
-                }
 
-            }else if(Checker[j].objectType == "Queen"){
-                int check = 0;
-                for(int h = 1; h < 9; h++){
-                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
-                        check++;
-                    }
-                }
-                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
-                    check++;
-                }
-                if(check != 0){
-                    return 1;
-                }
-            }else if(Checker[j].objectType == "King"){
-                return 0;
-            }else{
-                return -2;//뭔가 잘못되었다는 신호
-            }
-        }
-
-    }else if(Checkee->team == "black") {
-        for (j = 1; j < 17; j++) {
-            if (Checker[j].objectType == "Pawn") {
-                int Check;
-                Check = 0;
-                if ((Checker[j].xPos - 1 == Checkee->xPosi) &&
-                    ((Checker[j].yPos - 1 == Checkee->yPosi) || (Checker[j].yPos + 1 == Checkee->yPosi)))
-                    Check++;
-                if (Check != 0) {
-                    return 1;
-                }
-            } else if (Checker[j].objectType == "Rook") {
-                int check = 0;
-                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
-                    check++;
-                }
-                if (check != 0) {
-                    return 1;
-                }
-            } else if (Checker[j].objectType == "Knight") {
-                int Check;
-                Check = 0;
-                if (((Checker[j].xPos + 2 == Checkee->xPosi) &&
-                     ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos - 1)) == Checkee->yPosi)) {
-                    Check++;
-                } else if (((Checker[j].xPos + 1 == Checkee->xPosi) || (Checker[j].xPos - 1 == Checkee->xPosi)) &&
-                           (Checker[j].yPos + 2 == Checkee->yPosi)) {
-                    Check++;
-                } else if ((Checker[j].xPos - 2 == Checkee->xPosi) &&
-                           ((Checker[j].yPos + 1 == Checkee->yPosi) || (Checker[j].yPos == Checkee->yPosi))) {
-                    Check++;
-                } else if (((Checker[j].xPos + 1 == Checkee->xPosi) || (Checker[j].xPos - 1 == Checkee->xPosi)) &&
-                           (Checker[j].yPos - 2 == Checkee->yPosi)) {
-                    Check++;
-                }
-                if (Check != 0) {
-                    return 1;
-                }
-            } else if (Checker[j].objectType == "Bishop") {
-                int check_Check = 0;
-                for (int h = 1; h < 9; h++) {
-                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
-                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
-                        check_Check++;
-                    }
-                }
-                if (check_Check != 0) {
-                    return 1;
-                }
-
-            } else if (Checker[j].objectType == "Queen") {
-                int check = 0;
-                for (int h = 1; h < 9; h++) {
-                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
-                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
-                        check++;
-                    }
-                }
-                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
-                    check++;
-                }
-                if (check != 0) {
-                    return 1;
-                }
-            } else if (Checker[j].objectType == "King") {
-                return 0;
-            } else {
-                return -2;//뭔가 잘못되었다는 신호
-            }
-        }
-    }
-}
 int main() {
     Object *whitePieces, *blackPieces;
     whitePieces = (Object*)malloc(16 * sizeof(Object));
