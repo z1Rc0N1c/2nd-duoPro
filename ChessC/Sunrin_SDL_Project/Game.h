@@ -13,6 +13,9 @@ typedef struct GameScene {
 	int quit;
 	struct Slot* selectedArray;
 
+	struct Object* wKing;
+	struct Object* bKing;
+
 } GameScene;
 
 typedef struct Slot {

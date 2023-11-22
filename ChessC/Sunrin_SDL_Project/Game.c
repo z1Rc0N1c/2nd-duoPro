@@ -172,7 +172,7 @@ void GameScene_Render()
 
 	//선택된 오브젝트 표시
 	if (gameScene.selectedArray && gameScene.selectedArray->object) {
-		move_obj(&gameScene);
+		move_obj(&gameScene, gameScene.selectedArray->object);
 		drawFilledCircle(renderer, gameScene.selectedArray->positionX, gameScene.selectedArray->positionY, 30, 200, 200, 200, 150);
 
 

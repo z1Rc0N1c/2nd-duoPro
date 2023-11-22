@@ -13,5 +13,4 @@ typedef struct Object {
 } Object;
 
 void assignMent(struct GameScene*);
-void check_obj(Object* a, int objType, int size, int x, int y);
-void move_obj(GameScene* gameScene);
+void move_obj(struct GameScene* gameScene);
