@@ -178,8 +178,25 @@ int is_Check(Object *Checker, Pos *Checkee){
                 }
             }else if(strcmp(Checker[j].objectType, "Rook") == 0){
                 int check = 0;
-                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
-                    check++;
+                int blank = 0;
+                if(Checker[j].xPos == Checkee->xPosi){
+                    if(Checker[j].xPos>Checkee->xPosi){
+                        for(int q = Checker[j].xPos-1; q>Checkee->xPosi; q--){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos == Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
+                    }else if(Checker[j].xPos<Checkee->xPosi){
+                        for(int q = Checker[j].xPos+1; q<Checkee->xPosi;q++){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos != Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
+                    }
                 }
                 if(check != 0){
                     return 1;
@@ -202,8 +219,31 @@ int is_Check(Object *Checker, Pos *Checkee){
             }else if(strcmp(Checker[j].objectType, "Bishop") == 0){
                 int check_Check = 0;
                 for(int h = 1;h<9; h++){
-                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
-                        check_Check++;
+                    if((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h!=Checker[j].xPos+h)&&(Checker[q].yPos+h!=Checker[j].yPos+h)){
+                                check_Check++;
+                            }
+                        }
+                    }
+                    else if((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check_Check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos + h == Checkee->xPosi)&&Checker[j].yPos-h == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h != Checker[j].xPos+h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check_Check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos - h == Checkee->xPosi)&&(Checker[j].yPos+h) == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos+h != Checker[j].yPos+h)){
+                                check_Check++;
+                            }
+                        }
                     }
                 }
                 if(check_Check != 0){
@@ -212,13 +252,55 @@ int is_Check(Object *Checker, Pos *Checkee){
 
             }else if(strcmp(Checker[j].objectType, "Queen") == 0){
                 int check = 0;
-                for(int h = 1; h < 9; h++){
-                    if(((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi))||((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi))){
-                        check++;
+                if(Checker[j].xPos == Checkee->xPosi){
+                    if(Checker[j].xPos>Checkee->xPosi){
+                        for(int q = Checker[j].xPos-1; q>Checkee->xPosi; q--){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos == Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
+                    }else if(Checker[j].xPos<Checkee->xPosi){
+                        for(int q = Checker[j].xPos+1; q<Checkee->xPosi;q++){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos != Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
                     }
                 }
-                if((Checker[j].xPos == Checkee->xPosi)||(Checker[j].yPos == Checkee->yPosi)){
-                    check++;
+                for(int h = 1;h<9; h++){
+                    if((Checker[j].xPos+h >8)||(Checker[j].yPos>8)){
+                        break;
+                    }
+                    if((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h!=Checker[j].xPos+h)&&(Checker[q].yPos+h!=Checker[j].yPos+h)){
+                                check++;
+                            }
+                        }
+                    }
+                    else if((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos + h == Checkee->xPosi)&&Checker[j].yPos-h == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h != Checker[j].xPos+h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos - h == Checkee->xPosi)&&(Checker[j].yPos+h) == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos+h != Checker[j].yPos+h)){
+                                check++;
+                            }
+                        }
+                    }
                 }
                 if(check != 0){
                     return 1;
@@ -243,8 +325,24 @@ int is_Check(Object *Checker, Pos *Checkee){
                 }
             } else if (strcmp(Checker[j].objectType, "Rook") == 0)  {
                 int check = 0;
-                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
-                    check++;
+                if(Checker[j].xPos == Checkee->xPosi){
+                    if(Checker[j].xPos>Checkee->xPosi){
+                        for(int q = Checker[j].xPos-1; q>Checkee->xPosi; q--){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos == Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
+                    }else if(Checker[j].xPos<Checkee->xPosi){
+                        for(int q = Checker[j].xPos+1; q<Checkee->xPosi;q++){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos != Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
+                    }
                 }
                 if (check != 0) {
                     return 1;
@@ -270,10 +368,35 @@ int is_Check(Object *Checker, Pos *Checkee){
                 }
             } else if (strcmp(Checker[j].objectType, "Bishop") == 0) {
                 int check_Check = 0;
-                for (int h = 1; h < 9; h++) {
-                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
-                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
-                        check_Check++;
+                for(int h = 1;h<9; h++){
+                    if((Checker[j].xPos+h >8)||(Checker[j].yPos>8)){
+                        break;
+                    }
+                    if((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h!=Checker[j].xPos+h)&&(Checker[q].yPos+h!=Checker[j].yPos+h)){
+                                check_Check++;
+                            }
+                        }
+                    }
+                    else if((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check_Check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos + h == Checkee->xPosi)&&Checker[j].yPos-h == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h != Checker[j].xPos+h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check_Check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos - h == Checkee->xPosi)&&(Checker[j].yPos+h) == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos+h != Checker[j].yPos+h)){
+                                check_Check++;
+                            }
+                        }
                     }
                 }
                 if (check_Check != 0) {
@@ -282,14 +405,55 @@ int is_Check(Object *Checker, Pos *Checkee){
 
             } else if (strcmp(Checker[j].objectType, "Queen") == 0) {
                 int check = 0;
-                for (int h = 1; h < 9; h++) {
-                    if (((Checker[j].xPos + h == Checkee->xPosi) && (Checker[j].yPos + h == Checkee->yPosi)) ||
-                        ((Checker[j].xPos - h == Checkee->xPosi) && (Checker[j].yPos - h == Checkee->yPosi))) {
-                        check++;
+                if(Checker[j].xPos == Checkee->xPosi){
+                    if(Checker[j].xPos>Checkee->xPosi){
+                        for(int q = Checker[j].xPos-1; q>Checkee->xPosi; q--){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos == Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
+                    }else if(Checker[j].xPos<Checkee->xPosi){
+                        for(int q = Checker[j].xPos+1; q<Checkee->xPosi;q++){
+                            for(int w = 0; w<32; w++){
+                                if((Checker[q].xPos != Checker[w].xPos)&&(q != w)){
+                                    check++;
+                                }
+                            }
+                        }
                     }
                 }
-                if ((Checker[j].xPos == Checkee->xPosi) || (Checker[j].yPos == Checkee->yPosi)) {
-                    check++;
+                for(int h = 1;h<9; h++){
+                    if((Checker[j].xPos+h >8)||(Checker[j].yPos>8)){
+                        break;
+                    }
+                    if((Checker[j].xPos+h == Checkee->xPosi)&&(Checker[j].yPos+h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h!=Checker[j].xPos+h)&&(Checker[q].yPos+h!=Checker[j].yPos+h)){
+                                check++;
+                            }
+                        }
+                    }
+                    else if((Checker[j].xPos-h == Checkee->xPosi)&&(Checker[j].yPos-h == Checkee->yPosi)){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos + h == Checkee->xPosi)&&Checker[j].yPos-h == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos+h != Checker[j].xPos+h)&&(Checker[q].yPos-h != Checker[j].yPos-h)){
+                                check++;
+                            }
+                        }
+                    }else if((Checker[j].xPos - h == Checkee->xPosi)&&(Checker[j].yPos+h) == Checkee->yPosi){
+                        for(int q = 0; q<32; q++){
+                            if((q != j)&&(Checker[q].xPos-h != Checker[j].xPos-h)&&(Checker[q].yPos+h != Checker[j].yPos+h)){
+                                check++;
+                            }
+                        }
+                    }
                 }
                 if (check != 0) {
                     return 1;
