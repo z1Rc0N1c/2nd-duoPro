@@ -53,8 +53,8 @@ void assignMent(GameScene* gameScene) {//기물 선언용 함수
     Assign(0, 2, 6, 0, gameScene);
     Assign(0, 3, 2, 0, gameScene);
     Assign(0, 3, 5, 0, gameScene);
-    Assign(0, 4, 3, 0, gameScene);
-    Assign(0, 5,4, 0, gameScene);
+    Assign(0, 4, 4, 0, gameScene);
+    Assign(0, 5,3, 0, gameScene);
 
     //백
     for (int i = 0; i < 8; i++)
@@ -65,8 +65,8 @@ void assignMent(GameScene* gameScene) {//기물 선언용 함수
     Assign(1, 2, 6, 7, gameScene);
     Assign(1, 3, 2, 7, gameScene);
     Assign(1, 3, 5, 7, gameScene);
-    Assign(1, 4, 3, 7, gameScene);
-    Assign(1, 5, 4, 7, gameScene);
+    Assign(1, 4, 4, 7, gameScene);
+    Assign(1, 5, 3, 7, gameScene);
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {

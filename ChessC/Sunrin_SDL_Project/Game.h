@@ -18,6 +18,9 @@ typedef struct GameScene {
 
 	List* attainableSlots;
 
+	TTF_Font* font;
+	bool endGame;
+
 } GameScene;
 
 typedef struct Slot {

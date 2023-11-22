@@ -1,14 +1,1 @@
-﻿  chessF.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(212,53): warning C4029: 선언된 정식 매개 변수 목록이 정의와 다릅니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(213,9): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(762,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-  font.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\font.c(57,24): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\font.c(58,24): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  window.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\window.c(62,14): warning C4133: '=': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\window.c(77,11): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\window.c(117,25): warning C4133: '함수': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-  코드를 생성하고 있습니다...
-  Sunrin_SDL_Project.vcxproj -> C:\Users\swimk\Coding\2nd-duoPro\ChessC\x64\Debug\Sunrin_SDL_Project.exe
+﻿  Sunrin_SDL_Project.vcxproj -> C:\Users\swimk\Coding\2nd-duoPro\ChessC\x64\Debug\Sunrin_SDL_Project.exe
