@@ -125,56 +125,56 @@ void assignMent(GameScene* gameScene) {//기물 선언용 함수
 
 
 }
-void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
-    int j;
-    switch (objType) {
-        case 1:
-            for (j = 0; j < size; j++) {
-                if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s 선택했습니다.", x, y, a[j].objectType);
-                }else{
-                    printf("Cannot find Object, Reselect");break;
-                }
-            }
-            break;
-        case 2:
-            for (j = 0; j < size; j++) {
-                if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
-                }
-            }
-            break;
-        case 3:
-            for (j = 0; j < size; j++) {
-                if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
-                }
-            }
-            break;
-        case 4:
-            for (j = 0; j < size; j++) {
-                if (a[j].xPos == x && a[j].yPos == y) {
-                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
-                }
-            }
-            break;
-        case 5:
-            if (a->xPos == x && a->yPos == y) {
-                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
-            }else{
-                printf("Cannot find Object, Reselect");
-            }
-            break;
-        case 6:
-            if (a->xPos == x && a->yPos == y) {
-                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
-            } else {
-                printf("Cannot find Object, Reselect");
-            }
-            break;
-    }
-
-}
+//void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 시에 무었을 선택했는지 확인하는 함수
+//    int j;
+//    switch (objType) {
+//        case 1:
+//            for (j = 0; j < size; j++) {
+//                if (a[j].xPos == x && a[j].yPos == y) {
+//                    printf("(%d, %d) 좌표의 %s 선택했습니다.", x, y, a[j].objectType);
+//                }else{
+//                    printf("Cannot find Object, Reselect");break;
+//                }
+//            }
+//            break;
+//        case 2:
+//            for (j = 0; j < size; j++) {
+//                if (a[j].xPos == x && a[j].yPos == y) {
+//                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+//                }
+//            }
+//            break;
+//        case 3:
+//            for (j = 0; j < size; j++) {
+//                if (a[j].xPos == x && a[j].yPos == y) {
+//                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+//                }
+//            }
+//            break;
+//        case 4:
+//            for (j = 0; j < size; j++) {
+//                if (a[j].xPos == x && a[j].yPos == y) {
+//                    printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[j].objectType);
+//                }
+//            }
+//            break;
+//        case 5:
+//            if (a->xPos == x && a->yPos == y) {
+//                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
+//            }else{
+//                printf("Cannot find Object, Reselect");
+//            }
+//            break;
+//        case 6:
+//            if (a->xPos == x && a->yPos == y) {
+//                printf("(%d, %d) 좌표의 %s을 선택했습니다.", x, y, a[i].objectType);
+//            } else {
+//                printf("Cannot find Object, Reselect");
+//            }
+//            break;
+//    }
+//
+//}
 
 short CheckMovingPossible(GameScene* gameScene, Object* obj, int x, int y) {
     int xMove = obj->xPos + x;
@@ -214,7 +214,6 @@ void move_obj(GameScene* gameScene) {
 
             if (!object->isFirstMoved) {
                 CheckMovingPossible(gameScene, object, 0, 2 * directionConst);
-                object->isFirstMoved = true;
             }
             break;
         case 1:

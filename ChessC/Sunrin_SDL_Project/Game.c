@@ -95,6 +95,7 @@ void GameScene_Update()
 					if (slot->x == targetSlot->x && slot->y == targetSlot->y) {
 
 						gameScene.order = (gameScene.order) ? 0 : 1;
+						gameScene.selectedArray->object->isFirstMoved = true;
 						if (slot->object) {
 							slot->object = gameScene.selectedArray->object;
 							gameScene.selectedArray->object = NULL;
