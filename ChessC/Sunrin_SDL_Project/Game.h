@@ -16,6 +16,11 @@ typedef struct GameScene {
 	struct Object* wKing;
 	struct Object* bKing;
 
+	List* attainableSlots;
+
+	TTF_Font* font;
+	bool endGame;
+
 } GameScene;
 
 typedef struct Slot {

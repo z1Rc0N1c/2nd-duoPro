@@ -44,6 +44,10 @@ void GameScene_Init()
 		printf("\n");
 	}
 
+	gameScene.attainableSlots = (List*)malloc(sizeof(List*));
+	list_init(gameScene.attainableSlots);
+
+	gameScene.font = TTF_OpenFont("./resources/Pretendard.otf", 80);
 }
 
 void GameScene_Event()
@@ -123,7 +127,7 @@ void GameScene_Update()
 
 		}
 	}
-
+	dead_King(gameScene);
 	printf("%d", gameScene.order);
 
 	//if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
@@ -187,6 +191,14 @@ void GameScene_Render()
 		}
 	}
 
+	SDL_Color textureColor1 = { 220, 220, 220, 255 };
+	if (gameScene.order == 0) {
+
+		drawTextCenterWRatio(renderer, gameScene.font, u8"BlackTurn", 200, 200, textureColor1, 0.8, 0.8);
+	}
+	else {
+		drawTextCenterWRatio(renderer, gameScene.font, u8"WhiteTurn", 200, 200, textureColor1, 0.8, 0.8);
+	}
 
 
 
@@ -195,6 +207,13 @@ void GameScene_Render()
 	// 오브젝트를 그리는 코드를 작성합니다.
 
 	SDL_RenderPresent(renderer);
+}
+
+void PopUpEndText(SDL_Renderer* renderer) {
+	if (gameScene.endGame) {
+		SDL_Color textureColor1 = { 240, 240, 240, 255 };
+		drawTextCenterWRatio(renderer, gameScene.font, u8"BlackTurn", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, textureColor1, 0.8, 0.8);
+	}
 }
 
 void GameScene_Release()

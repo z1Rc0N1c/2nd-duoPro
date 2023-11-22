@@ -1,36 +1,15 @@
-﻿  animation.c
-  chessF.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(205,53): warning C4029: 선언된 정식 매개 변수 목록이 정의와 다릅니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(206,9): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\chessF.c(804,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-  font.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\font.c(57,24): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\font.c(58,24): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  chessF.c
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\chessF.c(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\chessF.c(26,5): error C2059: 구문 오류: '}'
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\chessF.c(59,9): warning C4013: 'Assign'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\chessF.c(221,53): warning C4029: 선언된 정식 매개 변수 목록이 정의와 다릅니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\chessF.c(781,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
   Game.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(7,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(153,24): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(175,47): warning C4020: 'move_obj': 실제 매개 변수가 너무 많습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(176,20): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(184,22): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Game.c(141,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-  image.c
-  input.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\input.c(29,30): warning C4090: '함수': 'const' 한정자가 서로 다릅니다.
-  linkedList.c
-  main.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\main.c(5,12): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
-  pch.c
-  Start.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Start.c(21,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Start.c(83,22): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\Start.c(75,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
-  timer.c
-  window.c
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\window.c(62,14): warning C4133: '=': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\window.c(77,11): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\window.c(117,25): warning C4133: '함수': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(7,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(130,2): warning C4013: 'dead_King'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(157,24): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(179,47): warning C4020: 'move_obj': 실제 매개 변수가 너무 많습니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(180,20): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(188,22): warning C4133: '함수': 'SDL_Renderer *'과(와) 'SDL_Surface *' 사이의 형식이 호환되지 않습니다.
+C:\Users\박형근\Downloads\2nd-duoPro-main12\2nd-duoPro-main\ChessC\Sunrin_SDL_Project\Game.c(145,16): warning C4133: '초기화 중': 'SDL_Surface *'과(와) 'SDL_Renderer *' 사이의 형식이 호환되지 않습니다.
   코드를 생성하고 있습니다...
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\input.c(42): warning C4715: 'getKeyState': 모든 제어 경로에서 값을 반환하지는 않습니다.
-C:\Users\swimk\Coding\2nd-duoPro\ChessC\Sunrin_SDL_Project\input.c(65): warning C4715: 'getButtonState': 모든 제어 경로에서 값을 반환하지는 않습니다.
-  Sunrin_SDL_Project.vcxproj -> C:\Users\swimk\Coding\2nd-duoPro\ChessC\x64\Debug\Sunrin_SDL_Project.exe
