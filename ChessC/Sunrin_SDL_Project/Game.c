@@ -44,6 +44,9 @@ void GameScene_Init()
 		printf("\n");
 	}
 
+	gameScene.attainableSlots = (List*)malloc(sizeof(List*));
+	list_init(gameScene.attainableSlots);
+
 }
 
 void GameScene_Event()

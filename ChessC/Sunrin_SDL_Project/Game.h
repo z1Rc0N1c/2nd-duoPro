@@ -16,6 +16,8 @@ typedef struct GameScene {
 	struct Object* wKing;
 	struct Object* bKing;
 
+	List* attainableSlots;
+
 } GameScene;
 
 typedef struct Slot {

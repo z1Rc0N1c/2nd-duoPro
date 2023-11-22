@@ -188,16 +188,23 @@ short CheckMovingPossible(GameScene* gameScene, Object* obj, int x, int y) {
         if (gameScene->nodeArray[xMove][yMove]->object &&
             gameScene->nodeArray[xMove][yMove]->object->team == obj->team) return 0;
 
-            //폰은 추가 작업을 거침
-            if (obj->objectType == 0 && x != 0 && y != 0) {
+        //폰은 추가 작업을 거침
+        if (obj->objectType == 0 ) {
+            if (x != 0 && y != 0) {
                 if (!gameScene->nodeArray[xMove][yMove]->object ||
                     gameScene->nodeArray[xMove][yMove]->object->team == obj->team) return 0;
             }
-            list_push(obj->moveAllowedSlots, gameScene->nodeArray[xMove][yMove]);
+            else {
+                if (gameScene->nodeArray[xMove][yMove]->object &&
+                    gameScene->nodeArray[xMove][yMove]->object->team != obj->team) return 0;
+            }
+        }
+            
+        list_push(obj->moveAllowedSlots, gameScene->nodeArray[xMove][yMove]);
 
-            //다른 팀 말이 있을 경우 해당 말 까지만 이동
-            if (gameScene->nodeArray[xMove][yMove]->object &&
-                gameScene->nodeArray[xMove][yMove]->object->team != obj->team) return 0;
+        //다른 팀 말이 있을 경우 해당 말 까지만 이동
+        if (gameScene->nodeArray[xMove][yMove]->object &&
+            gameScene->nodeArray[xMove][yMove]->object->team != obj->team) return 0;
     }
     return 1;
 }
@@ -316,9 +323,137 @@ void move_obj(GameScene* gameScene, Object* object) {
         break;
     }
 }
-/*
 
-int is_Check(GameScene gameScene) {
+//void CalculateAttainableSlots(GameScene* gameScene) {
+//    List* objects = (List*)malloc(sizeof(List*));
+//    list_init(objects);
+//
+//    for (int i = 0; i < 8; i++) {
+//        for (j = 0; j < 8; j++) {
+//            Slot* slot = gameScene->nodeArray[i][j];
+//            if (slot->object && slot->object->team != gameScene->order) list_push(objects, slot->object);
+//        }
+//    }
+//
+//    Node* currentObject = objects->head;
+//
+//    while (currentObject) {
+//        Object* object = currentObject->val;
+//        int directionConst = 0;
+//
+//        switch (object->objectType) {
+//        case 0:
+//
+//            if (object->team == 0) directionConst = 1;
+//            else directionConst = -1;
+//            CheckMovingPossible(gameScene, object, 0, 1 * directionConst);
+//            CheckMovingPossible(gameScene, object, 1, 1 * directionConst);
+//            CheckMovingPossible(gameScene, object, -1, 1 * directionConst);
+//
+//            if (!object->isFirstMoved) {
+//                CheckMovingPossible(gameScene, object, 0, 2 * directionConst);
+//            }
+//            break;
+//        case 1:
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, i, 0);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, -i, 0);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, 0, i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, 0, -i);
+//                if (!t) break;
+//            }
+//            break;
+//        case 2:
+//            CheckMovingPossible(gameScene, object, 2, 1);
+//            CheckMovingPossible(gameScene, object, 2, -1);
+//            CheckMovingPossible(gameScene, object, 1, 2);
+//            CheckMovingPossible(gameScene, object, 1, -2);
+//            CheckMovingPossible(gameScene, object, -2, 1);
+//            CheckMovingPossible(gameScene, object, -2, -1);
+//            CheckMovingPossible(gameScene, object, -1, 2);
+//            CheckMovingPossible(gameScene, object, -1, -2);
+//            break;
+//        case 3:
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, i, i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, i, -i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, -i, -i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, -i, i);
+//                if (!t) break;
+//            }
+//            break;
+//        case 4:
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, i, 0);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, -i, 0);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, 0, i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, 0, -i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, i, i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, i, -i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, -i, -i);
+//                if (!t) break;
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                short t = CheckMovingPossible(gameScene, object, -i, i);
+//                if (!t) break;
+//            }
+//            break;
+//        case 5:
+//            CheckMovingPossible(gameScene, object, 1, 0);
+//            CheckMovingPossible(gameScene, object, -1, 0);
+//            CheckMovingPossible(gameScene, object, 0, 1);
+//            CheckMovingPossible(gameScene, object, 0, -1);
+//
+//            CheckMovingPossible(gameScene, object, 1, 1);
+//            CheckMovingPossible(gameScene, object, 1, -1);
+//            CheckMovingPossible(gameScene, object, -1, -1);
+//            CheckMovingPossible(gameScene, object, -1, 1);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
+//
+//
+//}
+/*
+int is_Check(GameScene gameScene, Slot* slot) {
     int j;
     List* checker = (List*)malloc(sizeof(List*));
     Object* checkee;
@@ -337,18 +472,11 @@ int is_Check(GameScene gameScene) {
     }
     
     Node* currentObject = checker->head;
-    if (gameScene.order == 1) {
+    if (gameScene.order == 0) {
         while (currentObject) {
             Object* obj = currentObject->val;
             if (obj->objectType == 0) {
-                int Check;
-                Check = 0;
-                if ((obj->xPos + 1 == obj->xPos) &&
-                    ((obj->yPos + 1 == obj->yPos) || (obj->yPos - 1 == obj->yPos)))
-                    Check++;
-                if (Check != 0) {
-                    return 1;
-                }
+                
             }
             else if (obj->objectType == 1) {
                 int check = 0;
