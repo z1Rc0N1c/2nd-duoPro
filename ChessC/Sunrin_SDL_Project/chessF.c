@@ -20,6 +20,9 @@ void Assign(int team, int type, int x, int y) {
     obj->yPos = y;
     obj->team = team;
     obj->objectType = type;
+    obj->isFirstMoved = false;
+    obj->moveAllowedSlots = (List*)malloc(sizeof(List*));
+    list_init(obj->moveAllowedSlots);
 
     slots[x][y]->object = obj;
 }
@@ -38,27 +41,27 @@ void assignMent(GameScene* gameScene) {//기물 선언용 함수
     }
     //흑
     for (int i = 0; i < 8; i++)
-        Assign(0, 0, 1, i);
+        Assign(0, 0, i, 1);
     Assign(0, 1, 0, 0);
-    Assign(0, 1, 0, 7);
-    Assign(0, 2, 0, 1);
-    Assign(0, 2, 0, 6);
-    Assign(0, 3, 0, 2);
-    Assign(0, 3, 0, 5);
-    Assign(0, 4, 0, 3);
-    Assign(0, 5, 0, 4);
+    Assign(0, 1, 7, 0);
+    Assign(0, 2, 1, 0);
+    Assign(0, 2, 6, 0);
+    Assign(0, 3, 2, 0);
+    Assign(0, 3, 5, 0);
+    Assign(0, 4, 3, 0);
+    Assign(0, 5,4, 0);
 
     //백
     for (int i = 0; i < 8; i++)
-        Assign(1, 0, 6, i);
-    Assign(1, 1, 7, 0);
+        Assign(1, 0, i, 6);
+    Assign(1, 1, 0, 7);
     Assign(1, 1, 7, 7);
-    Assign(1, 2, 7, 1);
-    Assign(1, 2, 7, 6);
-    Assign(1, 3, 7, 2);
-    Assign(1, 3, 7, 5);
-    Assign(1, 4, 7, 3);
-    Assign(1, 5, 7, 4);
+    Assign(1, 2, 1, 7);
+    Assign(1, 2, 6, 7);
+    Assign(1, 3, 2, 7);
+    Assign(1, 3, 5, 7);
+    Assign(1, 4, 3, 7);
+    Assign(1, 5, 4, 7);
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -172,38 +175,247 @@ void check_obj(Object *a, int objType, int size, int x, int y){//클릭했을 �
     }
 
 }
-void move_obj(Object *a, int objType, int size, int x, int y){
-    int j;
-    if(a->team == "white"){
-        switch (objType) {
-            case 1:
-                for(j=0; j<size; j++){
-                    if(a->xPos+1 == x&&(a->yPos+1 == y||a->yPos-1 == y)){
 
-                    }else{
-                        a->xPos+=1;
-                    }break;
-                }
+short CheckMovingPossible(GameScene* gameScene, Object* obj, int x, int y) {
+    int xMove = obj->xPos + x;
+    int yMove = obj->yPos + y;
+    if (xMove >= 0 && xMove < 8 && yMove >= 0 && yMove < 8) {
+        if (gameScene->nodeArray[xMove][yMove]->object &&
+            gameScene->nodeArray[xMove][yMove]->object->team == obj->team) return 0;
 
-            case 2:break;
-            case 3:break;
-            case 4:break;
-            case 5:break;
-            case 6:break;
-            default:break;
-        }
-    }else{
-        switch (objType) {
-            switch (objType) {
-                case 1:break;
-                case 2:break;
-                case 3:break;
-                case 4:break;
-                case 5:break;
-                case 6:break;
+            //폰은 추가 작업을 거침
+            if (obj->objectType == 0 && x != 0 && y != 0) {
+                if (!gameScene->nodeArray[xMove][yMove]->object ||
+                    gameScene->nodeArray[xMove][yMove]->object->team == obj->team) return 0;
             }
-        }
+            list_push(obj->moveAllowedSlots, gameScene->nodeArray[xMove][yMove]);
+
+            //다른 팀 말이 있을 경우 해당 말 까지만 이동
+            if (gameScene->nodeArray[xMove][yMove]->object &&
+                gameScene->nodeArray[xMove][yMove]->object->team != obj->team) return 0;
     }
+    return 1;
+}
+
+void move_obj(GameScene* gameScene) {
+    int j;
+    int directionConst = 0;
+    if (!gameScene->selectedArray || !gameScene->selectedArray->object) return;
+    Object* object = gameScene->selectedArray->object;
+    list_releaseList(object->moveAllowedSlots);
+    switch (object->objectType) {
+        case 0:
+
+            if (object->team == 0) directionConst = 1;
+            else directionConst = -1;
+            CheckMovingPossible(gameScene, object, 0, 1 * directionConst);
+            CheckMovingPossible(gameScene, object, 1, 1 * directionConst);
+            CheckMovingPossible(gameScene, object, -1, 1 * directionConst);
+
+            if (!object->isFirstMoved) {
+                CheckMovingPossible(gameScene, object, 0, 2 * directionConst);
+                object->isFirstMoved = true;
+            }
+            break;
+        case 1:
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, i, 0);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, -i, 0);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, 0, i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, 0, -i);
+                if (!t) break;
+            }
+            break;
+        case 2:
+            CheckMovingPossible(gameScene, object, 2, 1);
+            CheckMovingPossible(gameScene, object, 2, -1);
+            CheckMovingPossible(gameScene, object, 1, 2);
+            CheckMovingPossible(gameScene, object, 1, -2);
+            CheckMovingPossible(gameScene, object, -2, 1);
+            CheckMovingPossible(gameScene, object, -2, -1);
+            CheckMovingPossible(gameScene, object, -1, 2);
+            CheckMovingPossible(gameScene, object, -1, -2);
+            break;
+        case 3:
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, i, i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, i, -i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, -i, -i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, -i, i);
+                if (!t) break;
+            }
+            break;
+        case 4:
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, i, 0);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, -i, 0);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, 0, i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, 0, -i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, i, i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, i, -i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, -i, -i);
+                if (!t) break;
+            }
+            for (int i = 1; i < 8; i++) {
+                short t = CheckMovingPossible(gameScene, object, -i, i);
+                if (!t) break;
+            }
+            break;
+        case 5:
+            CheckMovingPossible(gameScene, object, 1, 0);
+            CheckMovingPossible(gameScene, object, -1, 0);
+            CheckMovingPossible(gameScene, object, 0, 1);
+            CheckMovingPossible(gameScene, object, 0, -1);
+
+            CheckMovingPossible(gameScene, object, 1, 1);
+            CheckMovingPossible(gameScene, object, 1, -1);
+            CheckMovingPossible(gameScene, object, -1, -1);
+            CheckMovingPossible(gameScene, object, -1, 1);
+            break;
+        default:
+            break;
+        }
+
+
+
+        //switch (objType) {
+        //case 1:
+        //    for (j = 0; j < size; j++) {
+        //        if (Pawn_diag(a, b, size) == 2) {
+        //            b->xPosi -= 1;
+        //            b->yPosi += 1;
+        //        }
+        //        else if (Pawn_diag(a, b, size) == 1) {
+        //            b->xPosi -= 1;
+        //            b->yPosi += 1;
+        //        }
+        //        else if (Pawn_diag(a, b, size) == 0) {
+        //            if (b->xPosi == 7) {
+        //                b->xPosi -= 2;
+        //            }
+        //            else {
+        //                b->xPosi -= 1;
+        //            }
+
+        //        }
+        //        else {
+        //            if (x == b->xPosi - 1 && y == b->yPosi) {
+        //                b->xPosi -= 1;
+        //            }
+
+        //        }
+        //        Promotion(a, b, 1);
+        //    }break;
+        //case 2:
+        //    for (j = 0; j < size; j++) {
+        //        if ((x == b->xPosi - j && y == b->yPosi) || (x == b->xPosi + j && b->yPosi)) {
+        //            b->xPosi = x;
+        //        }
+        //        else if ((x == b->xPosi && y == b->yPosi + j) || x == b->xPosi && b->yPosi - j) {
+        //            b->yPosi = y;
+        //        }
+        //    }
+        //    break;
+        //case 3:
+        //    for (j = 0; j < size; j++) {
+        //        if ((x == b->xPosi + 2 && (y == b->yPosi + 1) || y == b->yPosi - 1)) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //        else if ((x == b->xPosi + 1) || (x == b->yPosi - 1) && y == b->yPosi + 2) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //        else if (x == b->xPosi - 2 && (y == b->yPosi + 1) || (y == b->yPosi - 1)) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //        else if ((x == b->xPosi + 1) || (x == b->xPosi - 1) && y == b->yPosi - 2) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //    }
+
+        //    break;
+        //case 4:
+        //    for (j = 0; j < size; j++) {
+        //        if ((x == b->xPosi + j && y == b->yPosi + j) || (x == b->xPosi - j && y == b->yPosi - j) ||
+        //            (x == b->xPosi - j && y == b->yPosi + j) || (x == b->xPosi + j && y == b->yPosi - j)) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //    }
+        //    break;
+        //case 5:
+        //    for (j = 0; j < size; j++) {
+        //        if ((x == b->xPosi + j && y == b->yPosi) || (x == b->xPosi - j && b->yPosi)) {
+        //            b->xPosi = x;
+        //        }
+        //        else if ((x == b->xPosi && y == b->yPosi + j) || x == b->xPosi && b->yPosi - j) {
+        //            b->yPosi = y;
+        //        }
+        //        else if ((x == b->xPosi + j && y == b->yPosi + j) || (x == b->xPosi - j && y == b->yPosi - j) ||
+        //            (x == b->xPosi - j && y == b->yPosi + j) || (x == b->xPosi + j && y == b->yPosi - j)) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //    }
+        //    break;
+        //case 6:
+        //    for (j = 0; j < size; j++) {
+        //        if ((x == b->xPosi + 1 && y == b->yPosi) || (x == b->xPosi - 1 && b->yPosi)) {
+        //            b->xPosi = x;
+        //        }
+        //        else if ((x == b->xPosi && y == b->yPosi + 1) || x == b->xPosi && b->yPosi - 1) {
+        //            b->yPosi = y;
+        //        }
+        //        else if ((x == b->xPosi + 1 && y == b->yPosi + 1) || (x == b->xPosi - 1 && y == b->yPosi - 1) ||
+        //            (x == b->xPosi - 1 && y == b->yPosi + 1) || (x == b->xPosi + 1 && y == b->yPosi - 1)) {
+        //            b->xPosi = x;
+        //            b->yPosi = y;
+        //        }
+        //    }
+        //    break;
+        //default:
+        //    break;
+        //}
+
 }
 
 //int main() {

@@ -6,6 +6,7 @@
 #include <memory.h>
 #include <time.h>
 #include<string.h>
+#include<stdbool.h>
 
 #include "draw.h"
 #include "font.h"

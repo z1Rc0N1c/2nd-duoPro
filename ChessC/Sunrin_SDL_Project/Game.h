@@ -1,9 +1,10 @@
 #pragma once
 typedef struct GameScene {
 	// 씬에서 전역적으로 사용할 변수는 구조체로 랩핑해서 사용합니다.
-
+	short order;
 	SDL_Rect board;
 	struct Slot* nodeArray[8][8];
+
 
 	SDL_Color mapColor[2];
 	SDL_Texture* objectImages[2][6];

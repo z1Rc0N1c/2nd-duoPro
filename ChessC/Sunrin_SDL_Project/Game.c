@@ -6,6 +6,8 @@ void GameScene_Init()
 {
 	SDL_Renderer* renderer = Get_Renderer();
 
+	gameScene.order = 1;
+
 	gameScene.board.w = 800;
 	gameScene.board.h = 800;
 	gameScene.board.x = SCREEN_WIDTH / 2 - (gameScene.board.w / 2);
@@ -35,8 +37,8 @@ void GameScene_Init()
 
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			if (gameScene.nodeArray[i][j]->object)
-				printf("%d", gameScene.nodeArray[i][j]->object->objectType);
+			if (gameScene.nodeArray[j][i]->object)
+				printf("%d", gameScene.nodeArray[j][i]->object->objectType);
 			else printf("_");
 		}
 		printf("\n");
@@ -71,20 +73,57 @@ void GameScene_Update()
 	if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
 		if (fixedMouseX >= 0 && fixedMouseX < 800 && fixedMouseY >= 0 && fixedMouseY < 800) {
 			Slot* targetSlot = gameScene.nodeArray[fixedMouseX / 100][fixedMouseY / 100];
-			if (targetSlot) {
-				if (gameScene.selectedArray)
-					gameScene.selectedArray = (gameScene.selectedArray->x == targetSlot->x
-						&& gameScene.selectedArray->y == targetSlot->y) ?
-					NULL : targetSlot;
-				else gameScene.selectedArray = targetSlot;
+			if (targetSlot->object) {
+				if (targetSlot->object->team == gameScene.order) {
+					if (gameScene.selectedArray) {
+						gameScene.selectedArray = (gameScene.selectedArray->x == targetSlot->x
+							&& gameScene.selectedArray->y == targetSlot->y) ?
+							NULL : targetSlot;
+						return;
+					}
+					else {
+						gameScene.selectedArray = targetSlot;
+						return;
+					}
+				}
+				else if (!gameScene.selectedArray) return;
 			}
+			//다른 팀 이거나 빈 슬롯
+			if (gameScene.selectedArray) {
+				for (int i = 0; i < gameScene.selectedArray->object->moveAllowedSlots->len; i++) {
+					Slot* slot = list_search(gameScene.selectedArray->object->moveAllowedSlots, i);
+					if (slot->x == targetSlot->x && slot->y == targetSlot->y) {
+
+						gameScene.order = (gameScene.order) ? 0 : 1;
+						if (slot->object) {
+							slot->object = gameScene.selectedArray->object;
+							gameScene.selectedArray->object = NULL;
+							gameScene.selectedArray = NULL;
+							slot->object->xPos = slot->x;
+							slot->object->yPos = slot->y;
+							break;
+						}
+						else {
+							slot->object = gameScene.selectedArray->object;
+							gameScene.selectedArray->object = NULL;
+							gameScene.selectedArray = NULL;
+							slot->object->xPos = slot->x;
+							slot->object->yPos = slot->y;
+							break;
+						}
+
+					}
+
+				}
+			}
+
 
 
 
 		}
 	}
 
-	printf("%d", (gameScene.selectedArray) ? 1 : 0);
+	printf("%d", gameScene.order);
 
 	//if (getButtonState(SDL_BUTTON_LEFT) == KEY_DOWN) {
 	//	// startButton이 눌렸는지 체크한다.
@@ -104,7 +143,7 @@ void GameScene_Render()
 	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 50);
 	SDL_RenderClear(renderer);
 
-
+	//체스판 표시
 	int colorSwitch = 0;
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
@@ -118,6 +157,8 @@ void GameScene_Render()
 		}
 		colorSwitch = !colorSwitch;
 	}
+
+	//체스 말 표시
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			Slot* newNode = gameScene.nodeArray[i][j];
@@ -128,12 +169,24 @@ void GameScene_Render()
 		}
 	}
 
-	if (gameScene.selectedArray) {
-		//drawTextureWithRatio(renderer, gameScene.selectedArray->positionX - 50, gameScene.selectedArray->positionY - 50, 0.4, 0.4,
-		//	gameScene.selectIcon);
+	//선택된 오브젝트 표시
+	if (gameScene.selectedArray && gameScene.selectedArray->object) {
+		move_obj(&gameScene);
 		drawFilledCircle(renderer, gameScene.selectedArray->positionX, gameScene.selectedArray->positionY, 30, 200, 200, 200, 150);
 
+
+		//이동 가능한 오브젝트 표시
+		if (gameScene.selectedArray && gameScene.selectedArray->object) {
+			Node* currentNode = gameScene.selectedArray->object->moveAllowedSlots->head;
+			while (currentNode) {
+				Slot* value = currentNode->val;
+				drawFilledCircle(renderer, value->positionX, value->positionY, 15, 200, 200, 200, 150);
+				currentNode = currentNode->next;
+			}
+		}
 	}
+
+
 
 
 	//drawTexture(renderer, 0, 0, loadTexture(renderer, "D:\Coding\VisualStudio\ZOMVILLE\Sunrin_SDL_Project\resources"));
